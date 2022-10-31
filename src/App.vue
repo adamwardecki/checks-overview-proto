@@ -8,13 +8,13 @@
     </div>
 
     <div class="full">
-      <highcharts class="chartFull" :options="durationFullChartOptions" />
-      <highcharts class="chartFull" :options="fcpFullChartOptions" />
+      <highcharts class="py-8" :options="durationFullChartOptions" />
+      <highcharts class="py-8" :options="fcpFullChartOptions" />
 
-      <div>
+      <div class="py-8">
         <div class="text-left">
-          <h3>Performance</h3>
-          <h4>Check duration</h4>
+          <h3 class="text-xl font-semibold">Performance</h3>
+          <h4 class="font-semibold">Check duration</h4>
           <p>
             Shows the aggregated check duration across all the selected
             locations by default. The check duration reflects the full browser
@@ -158,10 +158,6 @@ export default {
 .chart {
   height: 200px;
   width: 610px;
-}
-
-.chartFull {
-  min-width: 100%;
 }
 
 .zone-safe {
