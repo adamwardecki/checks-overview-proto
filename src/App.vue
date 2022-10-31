@@ -1,5 +1,11 @@
 <template>
   <div>
+    <Drawer :open="isDrawerOpen"/>
+    <div>
+      <button @click="toggleDrawer" class="p-1 bg-green-600 rounded">
+        toggle drawer
+      </button>
+    </div>
     <div class="grid">
       <highcharts class="chart" :options="durationChartOptions" />
       <highcharts class="chart" :options="ttfbChartOptions" />
@@ -13,7 +19,6 @@
 
       <div class="py-8">
         <div class="text-left">
-          <h3 class="font-semibold">Will this show?</h3>
           <h3 class="text-xl font-semibold">Performance</h3>
           <h4 class="font-semibold">Check duration</h4>
           <p>
@@ -27,13 +32,13 @@
           :options="durationBucketedFullChartOptions"
         />
       </div>
-
       <ResponseRunsChart />
     </div>
   </div>
 </template>
 
 <script>
+import Drawer from './components/Drawer.vue'
 import ResponseRunsChart from './components/ResponseRunsChart.vue';
 import HelloWorld from './components/HelloWorld.vue';
 import {
@@ -52,6 +57,7 @@ export default {
   components: {
     HelloWorld,
     ResponseRunsChart,
+    Drawer,
   },
   data: () => ({
     options: {
@@ -73,6 +79,7 @@ export default {
         type: 'datetime',
       },
     },
+    isDrawerOpen: false,
   }),
   computed: {
     durationChartOptions() {
@@ -122,6 +129,11 @@ export default {
       };
     },
   },
+  methods: {
+    toggleDrawer () {
+      this.isDrawerOpen = !this.isDrawerOpen
+    }
+  }
 };
 </script>
 
