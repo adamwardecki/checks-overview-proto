@@ -33,6 +33,10 @@
         />
       </div>
       <ResponseRunsChart />
+      
+      <ResponseRunsChartWithBands />
+
+      <ResponseRunsChartWithAlerts />
     </div>
   </div>
 </template>
@@ -40,17 +44,16 @@
 <script>
 import Drawer from './components/Drawer.vue'
 import ResponseRunsChart from './components/ResponseRunsChart.vue';
+import ResponseRunsChartWithBands from './components/ResponseRunsChartWithBands.vue';
+import ResponseRunsChartWithAlerts from './components/ResponseRunsChartWithAlerts.vue';
 import HelloWorld from './components/HelloWorld.vue';
 import {
   duration,
-  ttfb,
-  fcp,
-  lcp,
   dates,
   durationBucketed,
   zones,
 } from './fixtures/data.js';
-import { mergeDates, getSeries } from './fixtures/helpers.js';
+import { getSeries } from './fixtures/helpers.js';
 
 export default {
   name: 'App',
@@ -58,6 +61,8 @@ export default {
     HelloWorld,
     ResponseRunsChart,
     Drawer,
+    ResponseRunsChartWithBands,
+    ResponseRunsChartWithAlerts
   },
   data: () => ({
     options: {
