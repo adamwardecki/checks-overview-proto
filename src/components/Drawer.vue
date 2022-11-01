@@ -3,13 +3,13 @@
     class="fixed top-0 z-50 w-1/3 h-full p-8 overflow-scroll text-left bg-white drop-shadow-md"
     :class="isOpen ? 'drawer--open' : 'drawer--closed'"
   >
-    <span v-html="icons.close" class="absolute cursor-pointer top-3 right-3 hover:fill-slate-500" @click="toggleDrawer" />
+    <span v-html="icons.close" class="absolute cursor-pointer top-3 right-3 hover:fill-slate-500" @click="closeDrawer" />
     <div class="flex justify-between mb-4 align-middle">
       <h2 class="text-lg font-bold">XX:XX - XX:XX</h2>
       <button class="text-sm cursor-pointer text-slate-500">See all</button>
     </div>
 
-    <div class="flex mb-6">
+    <div class="flex mb-5">
       <FilterItem
         v-for="(filterItem, index) in filters"
         :name="filterItem.name"
@@ -29,74 +29,71 @@
   </aside>
 </template>
 
-<script>
+<script setup>
+import { computed, ref } from 'vue';
 import icons from '../assets/icons.json'
 import { alerts, results } from '../fixtures/data.js';
 import TimelineItem from './TimelineItem.vue'
 import FilterItem from './FilterItem.vue'
 
-export default {
-  name: 'Drawer',
-  props: {
-    timeRange: String,
-    checkRunResults: Array,
+defineProps({
+  isOpen: Boolean
+})
+
+const emit = defineEmits(['close:drawer'])
+
+const filters = {
+  results: {
+    name: "Run results",
+    active: true,
   },
-  components: { TimelineItem, FilterItem },
-  data: () => ({
-    icons,
-    isOpen: false,
-    filters: {
-      results: {
-        name: "Run results",
-        active: true,
-      },
-      alerts: {
-        name: "Alerts",
-        active: true,
-      },
-    }
-  }),
-  methods: {
-    getCreatedAt(item) {
-      return item.payload ? item.payload.created_at : item.created_at
-    },
-    compare(a, b) {
-      if (this.getCreatedAt(a) > this.getCreatedAt(b) ) {
-        return -1
-      }
-      if (this.getCreatedAt(a) < this.getCreatedAt(b)) {
-        return 1
-      }
-      return 0
-    },
-    isAlert (item) {
-      return item.eventType
-    },
-    toggleDrawer () {
-      this.isOpen = !this.isOpen
-    }
-  },
-  computed: {
-    sortedItems () {
-      const items = [...alerts, ...results]
-      return items.sort((a, b) => this.compare(a,b))
-    },
-    filteredItems () {
-      return [...this.sortedItems].filter(item =>
-        this.isAlert(item) && this.filters.alerts.active || !this.isAlert(item) && this.filters.results.active
-      )
-    }
+  alerts: {
+    name: "Alerts",
+    active: true,
   },
 }
+
+function getCreatedAt(item) {
+  return item.payload ? item.payload.created_at : item.created_at
+}
+
+function compare(a, b) {
+  if (getCreatedAt(a) > getCreatedAt(b) ) {
+    return -1
+  }
+  if (getCreatedAt(a) < getCreatedAt(b)) {
+    return 1
+  }
+  return 0
+}
+
+function isAlert (item) {
+  return item.eventType
+}
+
+function closeDrawer () {
+  emit('close:drawer')
+}
+
+const sortedItems = computed(() => {
+  const items = [...alerts, ...results]
+  return items.sort((a, b) => compare(a,b))
+})
+
+const filteredItems = computed(() => {
+  return [...sortedItems.value].filter(item =>
+    isAlert(item) && filters.alerts.active || !isAlert(item) && filters.results.active
+  )
+})
 </script>
 
 <style>
 .drawer--open {
   right: 0;
-  transition: right 800ms;
+  transition: right 900ms;
 }
 .drawer--closed {
   right: -100%;
-  transition: right 600ms;
+  transition: right 700ms;
 }
 </style>

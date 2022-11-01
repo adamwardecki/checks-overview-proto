@@ -6,12 +6,10 @@
     {{ name }}
   </div>
 </template>
-<script>
-export default {
-  name: 'FilterItem',
-  props: {
-    name: String,
-    active: Boolean,
-  }
-}
+
+<script setup>
+defineProps({
+  name: String,
+  active: Boolean,
+})
 </script>

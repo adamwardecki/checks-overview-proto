@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Drawer ref="drawer" />
+    <Drawer @close:drawer="toggleDrawerState" :is-open="isDrawerOpen" />
 
     <div class="grid">
       <highcharts class="chart" :options="durationChartOptions" />
@@ -34,7 +34,7 @@
 
       <ResponseRunsChartWithAlerts />
 
-      <ResponseRunsChartWithDrawer @select:period="setDrawerState" />
+      <ResponseRunsChartWithDrawer @select:period="toggleDrawerState" />
     </div>
   </div>
 </template>
@@ -82,6 +82,7 @@ export default {
         type: 'datetime',
       },
     },
+    isDrawerOpen: false,
   }),
   computed: {
     durationChartOptions() {
@@ -132,8 +133,8 @@ export default {
     },
   },
   methods: {
-    setDrawerState () {
-      this.$refs.drawer.isOpen = true
+    toggleDrawerState () {
+      this.isDrawerOpen = !this.isDrawerOpen
     }
   }
 };
