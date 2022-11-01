@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Drawer :open="isDrawerOpen"/>
+    <Drawer :open="isDrawerOpen" />
     <div>
       <button @click="toggleDrawer" class="p-1 bg-green-600 rounded">
         toggle drawer
