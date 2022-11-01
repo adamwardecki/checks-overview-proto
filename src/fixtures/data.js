@@ -1,10 +1,8 @@
-export const alerts = [
+export const alertsStats = [
   { created_at: '2022-10-21T00:15:00Z', number: 4 },
   { created_at: '2022-10-21T06:00:00Z', number: 1 },
   { created_at: '2022-10-21T16:45:00Z', number: 1 },
 ]
-
-
 
 export const duration = [
   3847, 3876, 4048, 3669, 3824, 3827, 4260, 4765, 3553, 3521, 3687, 3905, 3764,

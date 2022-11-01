@@ -20,10 +20,10 @@
 <script setup>
 import { computed } from 'vue';
 import defaultChartOptions from '../fixtures/defaultResponseChartOptions.js';
-import { alerts } from '../fixtures/data'
+import { alertsStats } from '../fixtures/data'
 import { getAlertsPlotLines } from '../fixtures/helpers'
 
-console.log(getAlertsPlotLines(alerts))
+console.log(getAlertsPlotLines(alertsStats))
 const defaultOptions = computed(() => ({
   ...defaultChartOptions,
   xAxis: {
@@ -42,7 +42,7 @@ const defaultOptions = computed(() => ({
       from: new Date('2022-10-21T16:30:00Z').getTime(),  // Start of the plot band
       to: new Date('2022-10-21T17:00:00Z').getTime()  // End of the plot band
     }],
-    plotLines: getAlertsPlotLines(alerts),
+    plotLines: getAlertsPlotLines(alertsStats),
   },
 }));
 </script>
