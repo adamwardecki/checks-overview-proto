@@ -1,11 +1,7 @@
 <template>
   <div>
-    <Drawer :open="isDrawerOpen" />
-    <div>
-      <button @click="toggleDrawer" class="p-1 bg-green-600 rounded">
-        toggle drawer
-      </button>
-    </div>
+    <Drawer ref="drawer" />
+
     <div class="grid">
       <highcharts class="chart" :options="durationChartOptions" />
       <highcharts class="chart" :options="ttfbChartOptions" />
@@ -37,6 +33,8 @@
       <ResponseRunsChartWithBands />
 
       <ResponseRunsChartWithAlerts />
+
+      <ResponseRunsChartWithDrawer @select:period="setDrawerState" />
     </div>
   </div>
 </template>
@@ -46,7 +44,7 @@ import Drawer from './components/Drawer.vue'
 import ResponseRunsChart from './components/ResponseRunsChart.vue';
 import ResponseRunsChartWithBands from './components/ResponseRunsChartWithBands.vue';
 import ResponseRunsChartWithAlerts from './components/ResponseRunsChartWithAlerts.vue';
-import HelloWorld from './components/HelloWorld.vue';
+import ResponseRunsChartWithDrawer from './components/ResponseRunsChartWithDrawer.vue';
 import {
   duration,
   dates,
@@ -58,11 +56,11 @@ import { getSeries } from './fixtures/helpers.js';
 export default {
   name: 'App',
   components: {
-    HelloWorld,
     ResponseRunsChart,
     Drawer,
     ResponseRunsChartWithBands,
-    ResponseRunsChartWithAlerts
+    ResponseRunsChartWithAlerts,
+    ResponseRunsChartWithDrawer,
   },
   data: () => ({
     options: {
@@ -135,8 +133,8 @@ export default {
     },
   },
   methods: {
-    toggleDrawer () {
-      this.isDrawerOpen = !this.isDrawerOpen
+    setDrawerState () {
+      this.$refs.drawer.isOpen = true
     }
   }
 };

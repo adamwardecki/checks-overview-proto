@@ -1,11 +1,37 @@
+<template>
+  <div class="py-8">
+    <div class="text-left">
+      <h3 class="text-xl font-semibold">Check Runs in Drawer</h3>
+      <p>
+        Drawer opens when the runs are selected.
+      </p>
+    </div>
+    <highcharts
+      :constructor-type="'stockChart'"
+      :options="defaultOptions"
+    ></highcharts>
+  </div>
+</template>
+
+<script setup>
 import { mergeResponseDates } from '../fixtures/helpers.js';
 import {
   duration,
   dates,
   responseTime,
 } from '../fixtures/data.js';
+import { computed, ref, watch } from 'vue';
 
-export default {
+const selectedPeriod = ref(null)
+
+const emit = defineEmits(['select:period'])
+
+watch(selectedPeriod, () => {
+  emit('select:period')
+})
+
+const defaultOptions = computed(() => {
+  return {
     chart: {
       marginTop: 34,
       // plotAreaHeight: 200
@@ -42,6 +68,12 @@ export default {
         yAxis: 1,
         lineWidth: 1,
         color: '#333',
+        cursor: 'pointer',
+        events: {
+          click: ({point}) => {
+            selectedPeriod.value = point
+          }
+        }
       },
     ],
     rangeSelector: {
@@ -76,3 +108,5 @@ export default {
       },
     },
   }
+});
+</script>
