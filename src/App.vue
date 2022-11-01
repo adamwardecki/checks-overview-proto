@@ -82,7 +82,6 @@ export default {
         type: 'datetime',
       },
     },
-    isDrawerOpen: false,
   }),
   computed: {
     durationChartOptions() {
