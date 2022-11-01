@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between p-2 font-semibold border-b-2 border-slate-300">
-    <p class="flex items-center"><span v-html="icon" class="mr-5"/>{{ item.name }}</p>
-    {{ formatTimestamp(item.created_at) }}
+    <p class="flex items-center"><span v-html="icon" class="mr-5"/>{{ name }}</p>
+    {{ formatTimestamp(item.eventType ? item.payload.created_at : item.created_at) }}
   </div>
 </template>
 
@@ -20,9 +20,20 @@ export default {
     }
   },
   computed: {
+    isAlert () {
+      return this.item.eventType
+    },
     icon () {
+      if (this.isAlert) {
+        return this.item.payload.alertType === 'ALERT_FAILURE' ? icons['circle-failure'] : icons['circle-success']
+      }
       return this.item.hasErrors || this.item.hasFailures ? icons['circle-failure'] : icons['circle-success']
-
+    },
+    name () {
+      if (this.isAlert) {
+        return this.item.payload.alertType === 'ALERT_FAILURE' ? 'Failure Alert' : 'Recovery Alert'
+      }
+      return this.item.name
     }
   }
 };
