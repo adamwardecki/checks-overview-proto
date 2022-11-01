@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between p-2 font-semibold border-b-2 border-slate-300">
+  <div class="flex justify-between p-2 font-semibold border-b border-slate-300">
     <p class="flex items-center"><span v-html="icon" class="mr-5"/>{{ name }}</p>
     {{ formatTimestamp(item.eventType ? item.payload.created_at : item.created_at) }}
   </div>
