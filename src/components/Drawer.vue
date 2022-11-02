@@ -78,7 +78,7 @@ function closeDrawer () {
 }
 
 const formattedPeriod = computed(() => {
-  return moment(props.selectedPeriod.x).format('MMM DD HH:mm:ss')
+  return moment.utc(props.selectedPeriod.x).format('MMM DD HH:mm:ss')
 })
 
 const sortedItems = computed(() => {
