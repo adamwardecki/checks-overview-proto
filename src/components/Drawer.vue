@@ -42,7 +42,7 @@ defineProps({
 
 const emit = defineEmits(['close:drawer'])
 
-const filters = {
+const filters = ref({
   results: {
     name: "Run results",
     active: true,
@@ -51,7 +51,7 @@ const filters = {
     name: "Alerts",
     active: true,
   },
-}
+})
 
 function getCreatedAt(item) {
   return item.payload ? item.payload.created_at : item.created_at
@@ -81,8 +81,8 @@ const sortedItems = computed(() => {
 })
 
 const filteredItems = computed(() => {
-  return [...sortedItems.value].filter(item =>
-    isAlert(item) && filters.alerts.active || !isAlert(item) && filters.results.active
+  return sortedItems.value.filter(item =>
+    isAlert(item) && filters.value.alerts.active || !isAlert(item) && filters.value.results.active
   )
 })
 </script>
