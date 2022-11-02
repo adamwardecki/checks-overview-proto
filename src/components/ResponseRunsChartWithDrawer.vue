@@ -20,15 +20,9 @@ import {
   dates,
   responseTime,
 } from '../fixtures/data.js';
-import { computed, ref, watch } from 'vue';
-
-const selectedPeriod = ref(null)
+import { computed, ref } from 'vue';
 
 const emit = defineEmits(['select:period'])
-
-watch(selectedPeriod, () => {
-  emit('select:period')
-})
 
 const defaultOptions = computed(() => {
   return {
@@ -71,7 +65,7 @@ const defaultOptions = computed(() => {
         cursor: 'pointer',
         events: {
           click: ({point}) => {
-            selectedPeriod.value = point
+            emit('select:period', point)
           }
         }
       },

@@ -5,7 +5,7 @@
   >
     <span v-html="icons.close" class="absolute cursor-pointer top-3 right-3 hover:fill-slate-500" @click="closeDrawer" />
     <div class="flex justify-between mb-4 align-middle">
-      <h2 class="text-lg font-bold">XX:XX - XX:XX</h2>
+      <h2 class="text-lg font-bold">{{ formattedPeriod }}</h2>
       <button class="text-sm cursor-pointer text-slate-500">See all</button>
     </div>
 
@@ -35,9 +35,11 @@ import icons from '../assets/icons.json'
 import { alerts, results } from '../fixtures/data.js';
 import TimelineItem from './TimelineItem.vue'
 import FilterItem from './FilterItem.vue'
+import moment from 'moment'
 
-defineProps({
-  isOpen: Boolean
+const props = defineProps({
+  isOpen: Boolean,
+  selectedPeriod: Object,
 })
 
 const emit = defineEmits(['close:drawer'])
@@ -74,6 +76,10 @@ function isAlert (item) {
 function closeDrawer () {
   emit('close:drawer')
 }
+
+const formattedPeriod = computed(() => {
+  return moment(props.selectedPeriod.x).format('MMM DD HH:mm:ss')
+})
 
 const sortedItems = computed(() => {
   const items = [...alerts, ...results]
