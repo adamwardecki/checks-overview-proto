@@ -1,199 +1,29 @@
+
 <template>
-  <div>
-    <Drawer
-      :is-open="isDrawerOpen"
-      :selected-period="selectedPeriod"
-      @close:drawer="toggleDrawerState"
-    />
-
-    <div class="grid">
-      <highcharts class="chart" :options="durationChartOptions" />
-      <highcharts class="chart" :options="ttfbChartOptions" />
-      <highcharts class="chart" :options="fcpChartOptions" />
-      <highcharts class="chart" :options="lcpChartOptions" />
-    </div>
-
-    <div class="full">
-      <highcharts class="py-8" :options="durationFullChartOptions" />
-      <highcharts class="py-8" :options="fcpFullChartOptions" />
-
-      <div class="py-8">
-        <div class="text-left">
-          <h3 class="text-xl font-semibold">Performance</h3>
-          <h4 class="font-semibold">Check duration</h4>
-          <p>
-            Shows the aggregated check duration across all the selected
-            locations by default. The check duration reflects the full browser
-            session, including all pages visited and any waits.
-          </p>
-        </div>
-        <highcharts
-          class="chartFull"
-          :options="durationBucketedFullChartOptions"
-        />
-      </div>
-      <ResponseRunsChart />
-
-      <ResponseRunsChartWithBands />
-
-      <ResponseRunsChartWithAlerts />
-
-      <ResponseRunsChartWithDrawer @select:period="setPeriod($event)" />
-
-      <RunResultsColumnsChart />
-    </div>
-  </div>
+  <nav class="pb-8">
+    <a href="#/">Playground</a> |
+    <a href="#/prototype">Prototype</a>
+  </nav>
+  <component :is="currentView" />
 </template>
 
-<script>
-import Drawer from './components/Drawer.vue'
-import ResponseRunsChart from './components/ResponseRunsChart.vue';
-import ResponseRunsChartWithBands from './components/ResponseRunsChartWithBands.vue';
-import ResponseRunsChartWithAlerts from './components/ResponseRunsChartWithAlerts.vue';
-import ResponseRunsChartWithDrawer from './components/ResponseRunsChartWithDrawer.vue';
-import RunResultsColumnsChart from './components/RunResultsColumnsChart.vue';
-import {
-  duration,
-  dates,
-  durationBucketed,
-  zones,
-} from './fixtures/data.js';
-import { getSeries } from './fixtures/helpers.js';
+<script setup>
+import { ref, computed } from 'vue'
+import Playground from './Playground.vue'
+import Prototype from './Prototype.vue'
 
-export default {
-  name: 'App',
-  components: {
-    ResponseRunsChart,
-    Drawer,
-    ResponseRunsChartWithBands,
-    ResponseRunsChartWithAlerts,
-    ResponseRunsChartWithDrawer,
-    RunResultsColumnsChart
-  },
-  data: () => ({
-    options: {
-      title: '',
-      legend: {
-        enabled: false,
-      },
-      credits: {
-        enabled: false,
-      },
-      navigator: {
-        enabled: false,
-      },
-      yAxis: {
-        opposite: false,
-        title: '',
-      },
-      xAxis: {
-        type: 'datetime',
-      },
-    },
-    isDrawerOpen: false,
-    selectedPeriod: {},
-  }),
-  computed: {
-    durationChartOptions() {
-      return {
-        ...this.options,
-        series: [{ ...getSeries(duration, 'duration', dates), ...zones }],
-      };
-    },
-    ttfbChartOptions() {
-      return {
-        ...this.options,
-        series: [{ ...getSeries(duration, 'ttfb', dates), ...zones }],
-      };
-    },
-    fcpChartOptions() {
-      return {
-        ...this.options,
-        series: [getSeries(duration, 'fcp', dates)],
-      };
-    },
-    lcpChartOptions() {
-      return {
-        ...this.options,
-        series: [getSeries(duration, 'lcp', dates)],
-      };
-    },
-    durationFullChartOptions() {
-      return {
-        ...this.options,
-        series: [getSeries(duration, 'durationFull', dates)],
-      };
-    },
-    fcpFullChartOptions() {
-      return {
-        ...this.options,
-        series: [getSeries(duration, 'fcp', dates)],
-      };
-    },
-    durationBucketedFullChartOptions() {
-      const bucketsArray = Object.entries(durationBucketed);
-
-      return {
-        ...this.options,
-        series: [
-          ...bucketsArray.map(([name, value]) => getSeries(value, name, dates)),
-        ],
-      };
-    },
-  },
-  methods: {
-    setPeriod (point) {
-      this.selectedPeriod = point
-      if (!this.isDrawerOpen) this.isDrawerOpen = true
-    },
-    toggleDrawerState() {
-      this.isDrawerOpen = !this.isDrawerOpen
-    }
-  }
+const routes = {
+  '/': Playground,
+  '/prototype': Prototype
 }
+
+const currentPath = ref(window.location.hash)
+
+window.addEventListener('hashchange', () => {
+  currentPath.value = window.location.hash
+})
+
+const currentView = computed(() => {
+  return routes[currentPath.value.slice(1) || '/']
+})
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.grid {
-  display: grid;
-  grid-template: 200px / 1fr 1fr;
-  grid-gap: 32px;
-  justify-items: center;
-  padding: 16px 0;
-}
-
-.full {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  min-height: 200px;
-  gap: 16px;
-  padding: 16px 64px;
-}
-
-.chart {
-  height: 200px;
-  width: 610px;
-}
-
-.zone-safe {
-  fill: none;
-}
-
-.zone-danger {
-  fill: #aaa;
-}
-</style>
