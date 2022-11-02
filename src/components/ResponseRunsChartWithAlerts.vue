@@ -23,7 +23,6 @@ import defaultChartOptions from '../fixtures/defaultResponseChartOptions.js';
 import { alertsStats } from '../fixtures/data'
 import { getAlertsPlotLines } from '../fixtures/helpers'
 
-console.log(getAlertsPlotLines(alertsStats))
 const defaultOptions = computed(() => ({
   ...defaultChartOptions,
   xAxis: {

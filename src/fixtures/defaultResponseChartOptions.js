@@ -8,7 +8,6 @@ import {
 export default {
     chart: {
       marginTop: 34,
-      // plotAreaHeight: 200
     },
     yAxis: [
       {
