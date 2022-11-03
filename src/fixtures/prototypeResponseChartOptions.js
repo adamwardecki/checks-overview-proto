@@ -7,6 +7,7 @@ import {
 export default {
   chart: {
     marginTop: 34,
+    zoomType: 'x',
   },
   xAxis: {
     plotBands: [{
