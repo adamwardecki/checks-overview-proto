@@ -8,6 +8,26 @@ export default {
   chart: {
     marginTop: 34,
     zoomType: 'x',
+    zooming: {
+      resetButton: {
+        position: {
+          align: 'left',
+          y: 5,
+          x: 100,
+        },
+        theme: {
+          fill: '#F1F5F9',
+          stroke: '#D1D5DB',
+          r: 5,
+          padding: 5,
+          states: {
+            hover: {
+              fill: '#CBD5E1',
+            },
+          },
+        },
+      },
+    },
   },
   xAxis: {
     plotBands: [{

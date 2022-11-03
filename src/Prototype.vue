@@ -12,7 +12,11 @@
       </h2>
     </div>
     <RunResultsColumnsChart />
-    <ResponseRunChartPrototype @select:period="setPeriod($event)" />
+    <ResponseRunChartPrototype
+      :is-drawer-open="isDrawerOpen"
+      @open:drawer="setPeriod($event)"
+      @close:drawer="toggleDrawerState"
+    />
   </div>
 </template>
 
@@ -25,12 +29,13 @@ import Drawer from './components/Drawer.vue'
 const isDrawerOpen = ref(false)
 const selectedPeriod = ref({})
 
-function setPeriod (point) {
-  selectedPeriod.value = point
+function setPeriod (points) {
+  selectedPeriod.value = points
   if (!isDrawerOpen.value) isDrawerOpen.value = true
 }
 
 function toggleDrawerState () {
+  document.querySelector('.check-details-button').innerText = `${isDrawerOpen.value ? 'Show' : 'Hide'} details`
   isDrawerOpen.value = !isDrawerOpen.value
 }
 </script>

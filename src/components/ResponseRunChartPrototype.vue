@@ -21,16 +21,29 @@
 import { computed } from 'vue'
 import prototypeResponseChartOptions from '../fixtures/prototypeResponseChartOptions.js'
 
+const props = defineProps({
+  isDrawerOpen: Boolean,
+})
+
+const emit = defineEmits(['open:drawer', ['close:drawer']])
+
 const prototypeOptions = computed(() => ({
   ...prototypeResponseChartOptions,
 }))
 
 function insertDrawerButton (chart) {
-  console.log(chart)
   const button = document.createElement('button')
-  button.classList.add('px-3', 'py-0.5', 'text-sm', 'border', 'rounded', 'bg-[#f7f7f7]', 'hover:bg-slate-200', 'z-20', 'absolute', 'top-10', 'left-5')
+  button.classList.add('check-details-button', 'p-1', 'text-xs', 'border', 'border-gray-300', 'rounded', 'bg-slate-100', 'hover:bg-slate-300', 'z-20', 'absolute', 'top-10', 'left-5')
   const content = document.createTextNode('Show details')
   button.appendChild(content)
+  button.addEventListener('click', () => {
+    if (!props.isDrawerOpen) {
+      emit('open:drawer', chart.series[0].points)
+    } else {
+      emit('close:drawer')
+    }
+    button.innerText = `${props.isDrawerOpen ? 'Show' : 'Hide'} details`
+  })
   document.querySelector('.check-run-chart .highcharts-container').appendChild(button)
 }
 </script>
