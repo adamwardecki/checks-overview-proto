@@ -1,26 +1,28 @@
 <template>
   <div class="py-8">
     <div class="text-left">
-      <h3 class="text-xl font-semibold">Check Runs in Drawer</h3>
+      <h3 class="text-xl font-semibold">
+        Check Runs in Drawer
+      </h3>
       <p>
         Drawer opens when the runs are selected.
       </p>
     </div>
     <highcharts
-      :constructor-type="'stockChart'"
+      constructor-type="stockChart"
       :options="defaultOptions"
-    ></highcharts>
+    />
   </div>
 </template>
 
 <script setup>
-import { mergeResponseDates } from '../fixtures/helpers.js';
+import { mergeResponseDates } from '../fixtures/helpers.js'
 import {
   duration,
   dates,
   responseTime,
-} from '../fixtures/data.js';
-import { computed, ref } from 'vue';
+} from '../fixtures/data.js'
+import { computed } from 'vue'
 
 const emit = defineEmits(['select:period'])
 
@@ -64,10 +66,10 @@ const defaultOptions = computed(() => {
         color: '#333',
         cursor: 'pointer',
         events: {
-          click: ({point}) => {
+          click: ({ point }) => {
             emit('select:period', point)
-          }
-        }
+          },
+        },
       },
     ],
     rangeSelector: {
@@ -102,5 +104,5 @@ const defaultOptions = computed(() => {
       },
     },
   }
-});
+})
 </script>

@@ -1,20 +1,22 @@
 <template>
   <div class="py-8">
     <div class="text-left">
-      <h3 class="text-xl font-semibold">Check Run Results</h3>
+      <h3 class="text-xl font-semibold">
+        Check Run Results
+      </h3>
       <p>
         Stacked column chart with run results segmented by success, failure, and
         degraded.
       </p>
     </div>
-    <highcharts :options="defaultOptions"></highcharts>
+    <highcharts :options="defaultOptions" />
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { mergeDates } from '../fixtures/helpers.js';
-import { dates, failures, degradations, success } from '../fixtures/data.js';
+import { computed } from 'vue'
+import { mergeDates } from '../fixtures/helpers.js'
+import { dates, failures, degradations, success } from '../fixtures/data.js'
 
 const defaultOptions = computed(() => ({
   chart: {
@@ -64,5 +66,5 @@ const defaultOptions = computed(() => ({
       },
     },
   },
-}));
+}))
 </script>

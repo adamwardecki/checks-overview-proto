@@ -1,12 +1,17 @@
 <template>
   <div class="flex justify-between p-2 font-semibold border-b last:border-b-0 border-slate-300">
-    <p class="flex items-center"><span v-html="icon" class="mr-5"/>{{ name }}</p>
+    <p class="flex items-center">
+      <span
+        class="mr-5"
+        v-html="icon"
+      />{{ name }}
+    </p>
     {{ formatTimestamp(item.eventType ? item.payload.created_at : item.created_at) }}
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed } from 'vue'
 import moment from 'moment'
 import icons from '../assets/icons.json'
 
@@ -14,7 +19,7 @@ const props = defineProps({
   item: Object,
 })
 
-function formatTimestamp(timestamp) {
+function formatTimestamp (timestamp) {
   return moment.utc(timestamp).format('MMM DD HH:mm:ss')
 }
 

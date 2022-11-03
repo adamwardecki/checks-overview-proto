@@ -7,20 +7,42 @@
     />
 
     <div class="grid">
-      <highcharts class="chart" :options="durationChartOptions" />
-      <highcharts class="chart" :options="ttfbChartOptions" />
-      <highcharts class="chart" :options="fcpChartOptions" />
-      <highcharts class="chart" :options="lcpChartOptions" />
+      <highcharts
+        class="chart"
+        :options="durationChartOptions"
+      />
+      <highcharts
+        class="chart"
+        :options="ttfbChartOptions"
+      />
+      <highcharts
+        class="chart"
+        :options="fcpChartOptions"
+      />
+      <highcharts
+        class="chart"
+        :options="lcpChartOptions"
+      />
     </div>
 
     <div class="full">
-      <highcharts class="py-8" :options="durationFullChartOptions" />
-      <highcharts class="py-8" :options="fcpFullChartOptions" />
+      <highcharts
+        class="py-8"
+        :options="durationFullChartOptions"
+      />
+      <highcharts
+        class="py-8"
+        :options="fcpFullChartOptions"
+      />
 
       <div class="py-8">
         <div class="text-left">
-          <h3 class="text-xl font-semibold">Performance</h3>
-          <h4 class="font-semibold">Check duration</h4>
+          <h3 class="text-xl font-semibold">
+            Performance
+          </h3>
+          <h4 class="font-semibold">
+            Check duration
+          </h4>
           <p>
             Shows the aggregated check duration across all the selected
             locations by default. The check duration reflects the full browser
@@ -47,18 +69,18 @@
 
 <script>
 import Drawer from './components/Drawer.vue'
-import ResponseRunsChart from './components/ResponseRunsChart.vue';
-import ResponseRunsChartWithBands from './components/ResponseRunsChartWithBands.vue';
-import ResponseRunsChartWithAlerts from './components/ResponseRunsChartWithAlerts.vue';
-import ResponseRunsChartWithDrawer from './components/ResponseRunsChartWithDrawer.vue';
-import RunResultsColumnsChart from './components/RunResultsColumnsChart.vue';
+import ResponseRunsChart from './components/ResponseRunsChart.vue'
+import ResponseRunsChartWithBands from './components/ResponseRunsChartWithBands.vue'
+import ResponseRunsChartWithAlerts from './components/ResponseRunsChartWithAlerts.vue'
+import ResponseRunsChartWithDrawer from './components/ResponseRunsChartWithDrawer.vue'
+import RunResultsColumnsChart from './components/RunResultsColumnsChart.vue'
 import {
   duration,
   dates,
   durationBucketed,
   zones,
-} from './fixtures/data.js';
-import { getSeries } from './fixtures/helpers.js';
+} from './fixtures/data.js'
+import { getSeries } from './fixtures/helpers.js'
 
 export default {
   name: 'App',
@@ -68,7 +90,7 @@ export default {
     ResponseRunsChartWithBands,
     ResponseRunsChartWithAlerts,
     ResponseRunsChartWithDrawer,
-    RunResultsColumnsChart
+    RunResultsColumnsChart,
   },
   data: () => ({
     options: {
@@ -94,51 +116,51 @@ export default {
     selectedPeriod: {},
   }),
   computed: {
-    durationChartOptions() {
+    durationChartOptions () {
       return {
         ...this.options,
         series: [{ ...getSeries(duration, 'duration', dates), ...zones }],
-      };
+      }
     },
-    ttfbChartOptions() {
+    ttfbChartOptions () {
       return {
         ...this.options,
         series: [{ ...getSeries(duration, 'ttfb', dates), ...zones }],
-      };
+      }
     },
-    fcpChartOptions() {
+    fcpChartOptions () {
       return {
         ...this.options,
         series: [getSeries(duration, 'fcp', dates)],
-      };
+      }
     },
-    lcpChartOptions() {
+    lcpChartOptions () {
       return {
         ...this.options,
         series: [getSeries(duration, 'lcp', dates)],
-      };
+      }
     },
-    durationFullChartOptions() {
+    durationFullChartOptions () {
       return {
         ...this.options,
         series: [getSeries(duration, 'durationFull', dates)],
-      };
+      }
     },
-    fcpFullChartOptions() {
+    fcpFullChartOptions () {
       return {
         ...this.options,
         series: [getSeries(duration, 'fcp', dates)],
-      };
+      }
     },
-    durationBucketedFullChartOptions() {
-      const bucketsArray = Object.entries(durationBucketed);
+    durationBucketedFullChartOptions () {
+      const bucketsArray = Object.entries(durationBucketed)
 
       return {
         ...this.options,
         series: [
           ...bucketsArray.map(([name, value]) => getSeries(value, name, dates)),
         ],
-      };
+      }
     },
   },
   methods: {
@@ -146,10 +168,10 @@ export default {
       this.selectedPeriod = point
       if (!this.isDrawerOpen) this.isDrawerOpen = true
     },
-    toggleDrawerState() {
+    toggleDrawerState () {
       this.isDrawerOpen = !this.isDrawerOpen
-    }
-  }
+    },
+  },
 }
 </script>
 

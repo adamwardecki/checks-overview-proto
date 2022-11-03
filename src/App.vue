@@ -14,7 +14,7 @@ import Prototype from './Prototype.vue'
 
 const routes = {
   '/': Playground,
-  '/prototype': Prototype
+  '/prototype': Prototype,
 }
 
 const currentPath = ref(window.location.hash)
