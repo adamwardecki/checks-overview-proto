@@ -1,13 +1,29 @@
-import { mergeResponseDates } from '../fixtures/helpers.js'
+import { mergeResponseDates } from './helpers.js'
 import {
-  duration,
   dates,
   responseTime,
-} from '../fixtures/data.js'
+} from './data.js'
 
 export default {
   chart: {
     marginTop: 34,
+  },
+  xAxis: {
+    plotBands: [{
+      color: 'rgba(255, 0, 0, 0.1)', // Color value
+      from: new Date('2022-10-20T22:00:00Z').getTime(), // Start of the plot band
+      to: new Date('2022-10-21T02:30:00Z').getTime(), // End of the plot band
+    },
+    {
+      color: 'rgba(255, 0, 0, 0.1)', // Color value
+      from: new Date('2022-10-21T05:45:00Z').getTime(), // Start of the plot band
+      to: new Date('2022-10-21T06:15:00Z').getTime(), // End of the plot band
+    },
+    {
+      color: 'rgba(255, 0, 0, 0.1)', // Color value
+      from: new Date('2022-10-21T16:30:00Z').getTime(), // Start of the plot band
+      to: new Date('2022-10-21T17:00:00Z').getTime(), // End of the plot band
+    }],
   },
   yAxis: [
     {
@@ -30,15 +46,6 @@ export default {
       id: 'aapl-ohlc',
       name: 'Response Time',
       data: mergeResponseDates(responseTime, dates),
-      lineWidth: 1,
-      color: '#333',
-    },
-    {
-      type: 'column',
-      id: 'aapl-volume',
-      name: 'Check Runs',
-      data: mergeResponseDates(duration, dates),
-      yAxis: 1,
       lineWidth: 1,
       color: '#333',
     },
