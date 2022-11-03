@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="fixed top-0 z-50 w-1/3 h-full p-8 overflow-scroll text-left bg-white drop-shadow-md"
+    class="fixed top-0 z-50 w-1/3 h-full p-8 overflow-auto text-left bg-white drop-shadow-md"
     :class="isOpen ? 'drawer--open' : 'drawer--closed'"
   >
     <span
@@ -40,7 +40,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import icons from '../assets/icons.json'
-import { alerts, results } from '../fixtures/data.js'
+import { events, results } from '../fixtures/moreData.js'
 import TimelineItem from './TimelineItem.vue'
 import FilterItem from './FilterItem.vue'
 import moment from 'moment'
@@ -90,7 +90,7 @@ const formattedPeriod = computed(() => {
 })
 
 const sortedItems = computed(() => {
-  const items = [...alerts, ...results]
+  const items = [...events, ...results]
   return items.sort((a, b) => compare(a, b))
 })
 

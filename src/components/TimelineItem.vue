@@ -1,11 +1,14 @@
 <template>
-  <div class="flex justify-between p-2 font-semibold border-b last:border-b-0 border-slate-300">
-    <p class="flex items-center">
+  <div class="flex items-center justify-between p-2 font-semibold border-b last:border-b-0 border-slate-300">
+    <div class="flex items-center">
       <span
         class="mr-5"
         v-html="icon"
-      />{{ name }}
-    </p>
+      />
+      <p class="mr-5 truncate max-w-[200px]">
+        {{ name }}
+      </p>
+    </div>
     {{ formatTimestamp(item.eventType ? item.payload.created_at : item.created_at) }}
   </div>
 </template>
@@ -20,7 +23,7 @@ const props = defineProps({
 })
 
 function formatTimestamp (timestamp) {
-  return moment.utc(timestamp).format('MMM DD HH:mm:ss')
+  return moment.utc(timestamp).format('HH:mm:ss')
 }
 
 const isAlert = computed(() => {
