@@ -11,12 +11,13 @@
         Check Overview
       </h2>
     </div>
-    <RunResultsColumnsChart />
     <ResponseRunChartPrototype
       :is-drawer-open="isDrawerOpen"
       @open:drawer="setPeriod($event)"
       @close:drawer="toggleDrawerState"
     />
+
+    <RunResultsColumnsChart />
   </div>
 </template>
 

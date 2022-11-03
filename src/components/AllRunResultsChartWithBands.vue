@@ -1,29 +1,30 @@
+<template>
+  <div class="py-8">
+    <div class="text-left">
+      <h3 class="text-xl font-semibold">
+        Check Runs Duration
+      </h3>
+      <p>
+        This chart shows all check runs in a given time period.
+      </p>
+    </div>
+    <highcharts :options="defaultOptions" />
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
 import { results } from '../fixtures/moreData.js'
 
-export default {
+const defaultOptions = computed(() => ({
+  title: '',
   chart: {
     marginTop: 34,
     zoomType: 'x',
-    zooming: {
-      resetButton: {
-        position: {
-          align: 'left',
-          y: 6,
-          x: 104,
-        },
-        theme: {
-          fill: '#F1F5F9',
-          stroke: '#D1D5DB',
-          r: 5,
-          padding: 5,
-          states: {
-            hover: {
-              fill: '#CBD5E1',
-            },
-          },
-        },
-      },
-    },
+  },
+  yAxis: {
+    opposite: false,
+    title: '',
   },
   xAxis: {
     type: 'datetime',
@@ -38,10 +39,6 @@ export default {
         from: new Date('2022-09-28T12:59:18.478Z').getTime(), // Start of the plot band
         to: new Date('2022-09-28T13:08:42.767Z').getTime(), // End of the plot band
       }],
-  },
-  yAxis: {
-    opposite: false,
-    title: '',
   },
   series: [
     {
@@ -86,4 +83,5 @@ export default {
       },
     },
   },
-}
+}))
+</script>

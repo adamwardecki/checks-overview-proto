@@ -63,6 +63,10 @@
       <ResponseRunsChartWithDrawer @select:period="setPeriod($event)" />
 
       <RunResultsColumnsChart />
+
+      <ResponseResultsChartWithBands />
+
+      <AllRunResultsChartWithBands />
     </div>
   </div>
 </template>
@@ -74,6 +78,9 @@ import ResponseRunsChartWithBands from './components/ResponseRunsChartWithBands.
 import ResponseRunsChartWithAlerts from './components/ResponseRunsChartWithAlerts.vue'
 import ResponseRunsChartWithDrawer from './components/ResponseRunsChartWithDrawer.vue'
 import RunResultsColumnsChart from './components/RunResultsColumnsChart.vue'
+import ResponseResultsChartWithBands from './components/ResponseResultsChartWithBands.vue'
+import AllRunResultsChartWithBands from './components/AllRunResultsChartWithBands.vue'
+
 import {
   duration,
   dates,
@@ -91,6 +98,8 @@ export default {
     ResponseRunsChartWithAlerts,
     ResponseRunsChartWithDrawer,
     RunResultsColumnsChart,
+    ResponseResultsChartWithBands,
+    AllRunResultsChartWithBands,
   },
   data: () => ({
     options: {

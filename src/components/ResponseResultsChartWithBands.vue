@@ -1,29 +1,31 @@
-import { results } from '../fixtures/moreData.js'
+<template>
+  <div class="py-8">
+    <div class="text-left">
+      <h3 class="text-xl font-semibold">
+        Check Runs Duration P99
+      </h3>
+      <p>
+        This chart show the 99th percentile of the duration of the runs in a given time period.
+      </p>
+    </div>
+    <highcharts :options="defaultOptions" />
+  </div>
+</template>
 
-export default {
+<script setup>
+import { computed } from 'vue'
+import { mergeResponseDates } from '../fixtures/helpers.js'
+import { responseTime } from '../fixtures/moreData.js'
+
+const defaultOptions = computed(() => ({
+  title: '',
   chart: {
     marginTop: 34,
     zoomType: 'x',
-    zooming: {
-      resetButton: {
-        position: {
-          align: 'left',
-          y: 6,
-          x: 104,
-        },
-        theme: {
-          fill: '#F1F5F9',
-          stroke: '#D1D5DB',
-          r: 5,
-          padding: 5,
-          states: {
-            hover: {
-              fill: '#CBD5E1',
-            },
-          },
-        },
-      },
-    },
+  },
+  yAxis: {
+    opposite: false,
+    title: '',
   },
   xAxis: {
     type: 'datetime',
@@ -39,24 +41,11 @@ export default {
         to: new Date('2022-09-28T13:08:42.767Z').getTime(), // End of the plot band
       }],
   },
-  yAxis: {
-    opposite: false,
-    title: '',
-  },
   series: [
     {
       id: 'resp-time',
       name: 'Response Time',
-      data: results.map((result) => ({
-        x: new Date(result.created_at).getTime(),
-        y: result.responseTime,
-        ...(result.hasFailures
-          ? {
-              color: '#BF0B23',
-              marker: { lineColor: '#BF0B23', lineWidth: 2 },
-            }
-          : {}),
-      })),
+      data: mergeResponseDates(responseTime.series[2].data, responseTime.categories),
       lineWidth: 1,
       color: '#333',
     },
@@ -86,4 +75,5 @@ export default {
       },
     },
   },
-}
+}))
+</script>
