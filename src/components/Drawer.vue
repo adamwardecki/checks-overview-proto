@@ -55,11 +55,11 @@ const emit = defineEmits(['close:drawer'])
 const filters = ref({
   results: {
     name: 'Run results',
-    active: true,
+    active: false,
   },
   alerts: {
     name: 'Alerts',
-    active: true,
+    active: false,
   },
 })
 
@@ -95,8 +95,11 @@ const sortedItems = computed(() => {
 })
 
 const filteredItems = computed(() => {
+  if (!filters.value.results.active && !filters.value.alerts.active) {
+    return sortedItems.value
+  }
   return sortedItems.value.filter(item =>
-    (isAlert(item) && filters.value.alerts.active) || (!isAlert(item) && filters.value.results.active),
+    (filters.value.alerts.active && isAlert(item)) || (filters.value.results.active && !isAlert(item)),
   )
 })
 </script>
