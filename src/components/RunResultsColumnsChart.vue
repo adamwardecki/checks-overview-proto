@@ -89,6 +89,9 @@ const defaultOptions = computed(() => ({
     enabled: true,
     align: 'left',
   },
+  time: {
+    useUTC: false,
+  },
   credits: {
     enabled: false,
   },

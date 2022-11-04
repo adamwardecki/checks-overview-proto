@@ -23,7 +23,7 @@ const props = defineProps({
 })
 
 function formatTimestamp (timestamp) {
-  return moment.utc(timestamp).format('HH:mm:ss')
+  return moment(timestamp).format('HH:mm:ss')
 }
 
 const isAlert = computed(() => {

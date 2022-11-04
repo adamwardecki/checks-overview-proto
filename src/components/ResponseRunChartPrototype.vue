@@ -101,6 +101,9 @@ const prototypeOptions = {
   legend: {
     enabled: false,
   },
+  time: {
+    useUTC: false,
+  },
   credits: {
     enabled: false,
   },
