@@ -9,7 +9,10 @@
         degraded.
       </p>
     </div>
-    <highcharts :options="defaultOptions" />
+    <highcharts
+      ref="chart"
+      :options="defaultOptions"
+    />
   </div>
 </template>
 
@@ -17,6 +20,10 @@
 import { computed } from 'vue'
 import { results } from '../fixtures/moreData'
 import moment from 'moment'
+
+const props = defineProps({
+  setExtremes: Function,
+})
 
 const resultTypes = {
   failure: [],
@@ -53,8 +60,18 @@ const defaultOptions = computed(() => ({
   },
   xAxis: {
     type: 'datetime',
+    crosshair: true,
+    events: {
+      setExtremes: props.setExtremes,
+    },
   },
   series: [
+    {
+      name: 'Success',
+      type: 'column',
+      data: groupedResults(resultTypes.success),
+      color: '#5ced73',
+    },
     {
       name: 'Failure',
       type: 'column',
@@ -66,12 +83,6 @@ const defaultOptions = computed(() => ({
       type: 'column',
       data: groupedResults(resultTypes.degraded),
       color: '#F5A623',
-    },
-    {
-      name: 'Success',
-      type: 'column',
-      data: groupedResults(resultTypes.success),
-      color: '#5ced73',
     },
   ],
   legend: {

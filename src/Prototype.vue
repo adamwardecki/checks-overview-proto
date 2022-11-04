@@ -1,4 +1,3 @@
-
 <template>
   <Drawer
     :is-open="isDrawerOpen"
@@ -11,21 +10,100 @@
         Check Overview
       </h2>
     </div>
-    <ResponseRunChartPrototype
-      :is-drawer-open="isDrawerOpen"
-      @toggle:drawer="toggleDrawer"
-      @set:period="selectedPeriod = $event"
-    />
+    <div id="container">
+      <ResponseRunChartPrototype
+        :set-extremes="syncExtremes"
+        :is-drawer-open="isDrawerOpen"
+        @toggle:drawer="toggleDrawer"
+        @set:period="selectedPeriod = $event"
+      />
 
-    <RunResultsColumnsChart />
+      <RunResultsColumnsChart :set-extremes="syncExtremes" />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import Highcharts from 'highcharts'
+import { ref, onMounted } from 'vue'
 import RunResultsColumnsChart from './components/RunResultsColumnsChart.vue'
 import ResponseRunChartPrototype from './components/ResponseRunChartPrototype.vue'
 import Drawer from './components/Drawer.vue'
+
+/**
+ * In order to synchronize tooltips and crosshairs, override the
+ * built-in events with handlers defined on the parent element.
+ */
+function overrideChartEventHandlers () {
+  ['mousemove', 'touchmove', 'touchstart'].forEach(function (eventType) {
+    document.getElementById('container').addEventListener(
+      eventType,
+      function (e) {
+        let chart,
+          point,
+          i,
+          event
+
+        for (i = 0; i < Highcharts.charts.length; i = i + 1) {
+          chart = Highcharts.charts[i]
+          // Find coordinates within the chart
+          event = chart.pointer.normalize(e)
+          // Get the hovered point
+          point = chart.series[0].searchPoint(event, true)
+
+          if (point) {
+            point.highlight(e)
+          }
+        }
+      },
+    )
+  })
+}
+
+/**
+ * Highlight a point by showing tooltip, setting hover state and draw crosshair
+ */
+Highcharts.Point.prototype.highlight = function (event) {
+  event = this.series.chart.pointer.normalize(event)
+  this.onMouseOver() // Show the hover marker
+  this.series.chart.tooltip.refresh(this) // Show the tooltip
+  this.series.chart.xAxis[0].drawCrosshair(event, this) // Show the crosshair
+}
+
+/**
+ * Synchronize zooming through the setExtremes event handler.
+ */
+function syncExtremes (e) {
+  const thisChart = this.chart
+
+  const shouldShowResetZoom = !(e.min === undefined && e.max === undefined)
+
+  if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
+    Highcharts.each(Highcharts.charts, function (chart) {
+      if (chart !== thisChart) {
+        if (chart.xAxis[0].setExtremes) { // It is null while updating
+          chart.xAxis[0].setExtremes(
+            e.min,
+            e.max,
+            undefined,
+            false,
+            { trigger: 'syncExtremes' },
+          )
+        }
+      }
+
+      if (shouldShowResetZoom && !chart.resetZoomButton) {
+        chart.showResetZoom()
+      } else if (!shouldShowResetZoom && chart.resetZoomButton) {
+        chart.resetZoomButton = chart.resetZoomButton.destroy()
+      }
+    })
+  }
+}
+
+onMounted(() => {
+  overrideChartEventHandlers()
+})
 
 const isDrawerOpen = ref(false)
 const selectedPeriod = ref({})

@@ -21,6 +21,7 @@ import { results } from '../fixtures/moreData.js'
 
 const props = defineProps({
   isDrawerOpen: Boolean,
+  setExtremes: Function,
 })
 
 const emit = defineEmits(['toggle:drawer', 'set:period'])
@@ -70,6 +71,10 @@ const prototypeOptions = {
         from: new Date('2022-09-28T12:59:18.478Z').getTime(), // Start of the plot band
         to: new Date('2022-09-28T13:08:42.767Z').getTime(), // End of the plot band
       }],
+    crosshair: true,
+    events: {
+      setExtremes: props.setExtremes,
+    },
   },
   yAxis: {
     opposite: false,
