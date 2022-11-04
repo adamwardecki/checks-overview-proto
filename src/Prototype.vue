@@ -3,7 +3,7 @@
   <Drawer
     :is-open="isDrawerOpen"
     :selected-period="selectedPeriod"
-    @close:drawer="toggleDrawerState"
+    @toggle:drawer="toggleDrawer"
   />
   <div class="px-8">
     <div class="py-10">
@@ -13,8 +13,8 @@
     </div>
     <ResponseRunChartPrototype
       :is-drawer-open="isDrawerOpen"
-      @open:drawer="setPeriod($event)"
-      @close:drawer="toggleDrawerState"
+      @toggle:drawer="toggleDrawer"
+      @set:period="selectedPeriod = $event"
     />
 
     <RunResultsColumnsChart />
@@ -30,12 +30,7 @@ import Drawer from './components/Drawer.vue'
 const isDrawerOpen = ref(false)
 const selectedPeriod = ref({})
 
-function setPeriod (points) {
-  selectedPeriod.value = points
-  if (!isDrawerOpen.value) isDrawerOpen.value = true
-}
-
-function toggleDrawerState () {
+function toggleDrawer () {
   document.querySelector('.check-details-button').innerText = `${isDrawerOpen.value ? 'Show' : 'Hide'} details`
   isDrawerOpen.value = !isDrawerOpen.value
 }

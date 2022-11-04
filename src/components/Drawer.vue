@@ -5,7 +5,7 @@
   >
     <span
       class="absolute cursor-pointer top-3 right-3 hover:fill-slate-500"
-      @click="closeDrawer"
+      @click="toggleDrawer"
       v-html="icons.close"
     />
     <div class="flex justify-between mb-4 align-middle">
@@ -50,7 +50,7 @@ const props = defineProps({
   selectedPeriod: Object,
 })
 
-const emit = defineEmits(['close:drawer'])
+const emit = defineEmits(['toggle:drawer'])
 
 const filters = ref({
   results: {
@@ -81,8 +81,8 @@ function isAlert (item) {
   return item.eventType
 }
 
-function closeDrawer () {
-  emit('close:drawer')
+function toggleDrawer () {
+  emit('toggle:drawer')
 }
 
 const formattedPeriod = computed(() => {

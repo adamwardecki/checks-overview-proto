@@ -3,7 +3,7 @@
     <Drawer
       :is-open="isDrawerOpen"
       :selected-period="selectedPeriod"
-      @close:drawer="toggleDrawerState"
+      @close:drawer="toggleDrawer"
     />
 
     <div class="grid">
@@ -177,7 +177,7 @@ export default {
       this.selectedPeriod = point
       if (!this.isDrawerOpen) this.isDrawerOpen = true
     },
-    toggleDrawerState () {
+    toggleDrawer () {
       this.isDrawerOpen = !this.isDrawerOpen
     },
   },
