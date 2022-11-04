@@ -17,11 +17,10 @@
 </template>
 
 <script setup>
-import { results } from '../fixtures/moreData.js'
-
 const props = defineProps({
   isDrawerOpen: Boolean,
   setExtremes: Function,
+  results: Array,
 })
 
 const emit = defineEmits(['toggle:drawer', 'set:period'])
@@ -33,7 +32,8 @@ const prototypeOptions = {
   chart: {
     marginTop: 60,
     events: {
-      redraw () {
+      render () {
+        console.log('fire render')
         emit('set:period', this.xAxis[0].getExtremes())
       },
     },
@@ -84,7 +84,7 @@ const prototypeOptions = {
     {
       id: 'resp-time',
       name: 'Response Time',
-      data: results.map((result) => ({
+      data: props.results.map((result) => ({
         x: new Date(result.created_at).getTime(),
         y: result.responseTime,
         ...(result.hasFailures

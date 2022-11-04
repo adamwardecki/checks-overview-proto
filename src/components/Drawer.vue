@@ -5,7 +5,7 @@
   >
     <span
       class="absolute cursor-pointer top-3 right-3 hover:fill-slate-500"
-      @click="toggleDrawer"
+      @click="emit('toggle:drawer')"
       v-html="icons.close"
     />
     <div class="flex justify-between mb-4 align-middle">
@@ -70,8 +70,7 @@ function getCreatedAt (item) {
 function compare (a, b) {
   if (getCreatedAt(a) > getCreatedAt(b)) {
     return -1
-  }
-  if (getCreatedAt(a) < getCreatedAt(b)) {
+  } else if (getCreatedAt(a) < getCreatedAt(b)) {
     return 1
   }
   return 0
@@ -81,24 +80,30 @@ function isAlert (item) {
   return item.eventType
 }
 
-function toggleDrawer () {
-  emit('toggle:drawer')
-}
-
 const formattedPeriod = computed(() => {
-  return moment.utc(props.selectedPeriod.x).format('MMM DD HH:mm:ss')
+  const startTime = moment.utc(props.selectedPeriod.min).format('MMM DD HH:mm:ss')
+  const endTime = moment.utc(props.selectedPeriod.max).format('MMM DD HH:mm:ss')
+
+  return `${startTime} - ${endTime}`
 })
 
 const sortedItems = computed(() => {
-  const items = [...events, ...results]
-  return items.sort((a, b) => compare(a, b))
+  // sort array by date, order: newest => oldest
+  return [...events, ...results].sort((a, b) => compare(a, b))
+})
+
+const selectedItems = computed(() => {
+  return sortedItems.value.filter(item => {
+    const date = new Date(getCreatedAt(item)).getTime()
+    return date >= props.selectedPeriod.min && date <= props.selectedPeriod.max
+  })
 })
 
 const filteredItems = computed(() => {
   if (!filters.value.results.active && !filters.value.alerts.active) {
-    return sortedItems.value
+    return selectedItems.value
   }
-  return sortedItems.value.filter(item =>
+  return selectedItems.value.filter(item =>
     (filters.value.alerts.active && isAlert(item)) || (filters.value.results.active && !isAlert(item)),
   )
 })

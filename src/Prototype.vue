@@ -12,6 +12,7 @@
     </div>
     <div id="container">
       <ResponseRunChartPrototype
+        :results="results"
         :set-extremes="syncExtremes"
         :is-drawer-open="isDrawerOpen"
         @toggle:drawer="toggleDrawer"
@@ -26,6 +27,7 @@
 <script setup>
 import Highcharts from 'highcharts'
 import { ref, onMounted } from 'vue'
+import { results } from './fixtures/moreData'
 import RunResultsColumnsChart from './components/RunResultsColumnsChart.vue'
 import ResponseRunChartPrototype from './components/ResponseRunChartPrototype.vue'
 import Drawer from './components/Drawer.vue'
