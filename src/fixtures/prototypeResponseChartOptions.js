@@ -1,6 +1,9 @@
 import { results } from '../fixtures/moreData.js'
 
 export default {
+  title: {
+    text: '',
+  },
   chart: {
     marginTop: 34,
     zoomType: 'x',

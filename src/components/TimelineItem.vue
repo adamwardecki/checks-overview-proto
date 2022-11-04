@@ -1,11 +1,11 @@
 <template>
   <div class="flex items-center justify-between p-2 font-semibold border-b last:border-b-0 border-slate-300">
-    <div class="flex items-center">
+    <div class="flex items-center w-3/4">
       <span
         class="mr-5"
         v-html="icon"
       />
-      <p class="mr-5 truncate max-w-[200px]">
+      <p class="mr-5 truncate max-w-[80%]">
         {{ name }}
       </p>
     </div>
