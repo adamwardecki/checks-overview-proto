@@ -12,16 +12,17 @@
       </h2>
     </div>
     <ResponseRunChartPrototype
+      :results="results"
       :is-drawer-open="isDrawerOpen"
       @toggle:drawer="toggleDrawer"
       @set:period="selectedPeriod = $event"
     />
-
     <RunResultsColumnsChart />
   </div>
 </template>
 
 <script setup>
+import { results } from './fixtures/moreData'
 import { ref } from 'vue'
 import RunResultsColumnsChart from './components/RunResultsColumnsChart.vue'
 import ResponseRunChartPrototype from './components/ResponseRunChartPrototype.vue'
