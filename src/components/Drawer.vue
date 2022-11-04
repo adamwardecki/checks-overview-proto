@@ -88,10 +88,8 @@ const formattedPeriod = computed(() => {
 })
 
 const sortedItems = computed(() => {
-  const items = [...events, ...results]
   // sort array by date, order: newest => oldest
-  return items
-    .sort((a, b) => compare(a, b))
+  return [...events, ...results].sort((a, b) => compare(a, b))
 })
 
 const selectedItems = computed(() => {
