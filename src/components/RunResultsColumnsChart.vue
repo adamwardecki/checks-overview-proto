@@ -15,8 +15,32 @@
 
 <script setup>
 import { computed } from 'vue'
-import { mergeDates } from '../fixtures/helpers.js'
-import { dates, failures, degradations, success } from '../fixtures/data.js'
+import { results } from '../fixtures/moreData'
+import moment from 'moment'
+
+const resultTypes = {
+  failure: [],
+  degraded: [],
+  success: [],
+}
+
+for (const result of results) {
+  if (result.hasFailures) resultTypes.failure.push(result)
+  if (result.isDegraded) resultTypes.degraded.push(result)
+  if (!result.hasFailures && !result.isDegraded) resultTypes.success.push(result)
+}
+
+const groupedResults = (resultTypes) => Object.entries(resultTypes
+  .map(({ startedAt }) => moment(startedAt).startOf('hour').unix() * 1000)
+  .reduce((acc, timestamp) => {
+    if (acc[timestamp]) {
+      acc[timestamp] += 1
+    } else {
+      acc[timestamp] = 1
+    }
+
+    return acc
+  }, {})).map(([timestamp, count]) => ({ x: Number(timestamp), y: count }))
 
 const defaultOptions = computed(() => ({
   chart: {
@@ -34,20 +58,19 @@ const defaultOptions = computed(() => ({
     {
       name: 'Failure',
       type: 'column',
-      data: mergeDates(failures, dates),
+      data: groupedResults(resultTypes.failure),
       color: '#BF0B23',
     },
     {
       name: 'Degraded',
       type: 'column',
-
-      data: mergeDates(degradations, dates),
+      data: groupedResults(resultTypes.degraded),
       color: '#F5A623',
     },
     {
       name: 'Success',
       type: 'column',
-      data: mergeDates(success, dates),
+      data: groupedResults(resultTypes.success),
       color: '#5ced73',
     },
   ],
@@ -61,6 +84,7 @@ const defaultOptions = computed(() => ({
   plotOptions: {
     column: {
       stacking: 'normal',
+      pointWidth: 20,
       dataLabels: {
         enabled: false,
       },
