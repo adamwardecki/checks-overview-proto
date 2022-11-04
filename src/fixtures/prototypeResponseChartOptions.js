@@ -5,14 +5,13 @@ export default {
     text: '',
   },
   chart: {
-    marginTop: 34,
+    marginTop: 60,
     zoomType: 'x',
     zooming: {
       resetButton: {
         position: {
           align: 'left',
-          y: 6,
-          x: 104,
+          x: 5,
         },
         theme: {
           fill: '#F1F5F9',

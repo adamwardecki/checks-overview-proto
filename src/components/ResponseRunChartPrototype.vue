@@ -32,7 +32,7 @@ const prototypeOptions = computed(() => ({
 
 function insertDrawerButton (chart) {
   const button = document.createElement('button')
-  button.classList.add('check-details-button', 'p-1', 'text-xs', 'border', 'border-gray-300', 'rounded-md', 'bg-slate-100', 'hover:bg-slate-300', 'z-20', 'absolute', 'top-10', 'left-16')
+  button.classList.add('check-details-button', 'p-1', 'text-xs', 'border', 'border-gray-300', 'rounded-md', 'bg-slate-100', 'hover:bg-slate-300', 'absolute', 'top-3', 'left-0')
   const content = document.createTextNode('Show details')
   button.appendChild(content)
   button.addEventListener('click', () => {
