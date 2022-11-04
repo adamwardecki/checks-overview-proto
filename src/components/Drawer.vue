@@ -95,18 +95,17 @@ const sortedItems = computed(() => {
 })
 
 const selectedItems = computed(() => {
-  return [...sortedItems.value]
-    .filter(item => {
-      const date = new Date(getCreatedAt(item)).getTime()
-      return date >= props.selectedPeriod.min && date <= props.selectedPeriod.max
-    })
+  return sortedItems.value.filter(item => {
+    const date = new Date(getCreatedAt(item)).getTime()
+    return date >= props.selectedPeriod.min && date <= props.selectedPeriod.max
+  })
 })
 
 const filteredItems = computed(() => {
   if (!filters.value.results.active && !filters.value.alerts.active) {
     return selectedItems.value
   }
-  return [...selectedItems].value.filter(item =>
+  return selectedItems.value.filter(item =>
     (filters.value.alerts.active && isAlert(item)) || (filters.value.results.active && !isAlert(item)),
   )
 })
