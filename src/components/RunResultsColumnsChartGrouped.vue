@@ -109,6 +109,10 @@ const defaultOptions = computed(() => ({
     enabled: false,
   },
 
+  time: {
+    useUTC: false,
+  },
+
   plotOptions: {
     series: {
       dataGrouping: {
