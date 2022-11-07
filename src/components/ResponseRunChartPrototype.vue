@@ -143,6 +143,11 @@ const prototypeOptions = {
       },
     },
   },
+
+  tooltip: {
+    valueDecimals: 0,
+    valueSuffix: ' ms',
+  },
 }
 
 function insertDrawerButton (chart) {
