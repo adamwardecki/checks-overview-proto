@@ -33,7 +33,6 @@ const prototypeOptions = {
     marginTop: 60,
     events: {
       render () {
-        console.log('fire render')
         emit('set:period', this.xAxis[0].getExtremes())
       },
     },
