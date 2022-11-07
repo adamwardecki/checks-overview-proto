@@ -81,8 +81,8 @@ function isAlert (item) {
 }
 
 const formattedPeriod = computed(() => {
-  const startTime = moment.utc(props.selectedPeriod.min).format('MMM DD HH:mm:ss')
-  const endTime = moment.utc(props.selectedPeriod.max).format('MMM DD HH:mm:ss')
+  const startTime = moment(props.selectedPeriod.min).format('MMM DD HH:mm:ss')
+  const endTime = moment(props.selectedPeriod.max).format('MMM DD HH:mm:ss')
 
   return `${startTime} - ${endTime}`
 })

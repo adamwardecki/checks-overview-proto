@@ -98,8 +98,13 @@ const prototypeOptions = {
       color: '#333',
     },
   ],
-
-  rangeSelector: {
+  legend: {
+    enabled: false,
+  },
+  time: {
+    useUTC: false,
+  },
+  credits: {
     enabled: false,
   },
 
@@ -107,15 +112,11 @@ const prototypeOptions = {
     enabled: false,
   },
 
-  legend: {
-    enabled: false,
-  },
-
   scrollbar: {
     enabled: false,
   },
 
-  credits: {
+  rangeSelector: {
     enabled: false,
   },
 
