@@ -1,19 +1,21 @@
-import { defineConfig }  from  'vite';
-import vue  from  '@vitejs/plugin-vue';
-import eslintPlugin  from  'vite-plugin-eslint';
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import eslintPlugin from 'vite-plugin-eslint'
 
- // https://vitejs.dev/config/
- export  default  defineConfig({
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [vue(), eslintPlugin()],
+	 base: '/checks-overview-proto/',
 	 plugins: [
 		 vue(),
 		 eslintPlugin({
-			 include: [ 'src/**/*.vue',  'src/*.vue'],
-		}),
-	],
+			 include: ['src/**/*.vue', 'src/*.vue'],
+    }),
+  ],
 	 resolve: {
 		 // configure the path alias
 		 alias: {
-			 '@':  '/src',
-		},
-	},
-});
+			 '@': '/src',
+    },
+  },
+})
