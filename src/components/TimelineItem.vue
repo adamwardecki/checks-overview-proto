@@ -6,15 +6,20 @@
         v-html="icon"
       />
       <p class="mr-5 truncate max-w-[80%] flex items-center">
-        {{ getLocationName(item.runLocation) }}
-        <img
-          class="h-5 ml-2"
-          :src="getLocationFlag(item.runLocation)"
-        >
-        <span class="mx-4 text-xs text-slate-400">
-          {{ formatDuration(item.responseTime, { showUnit: true }) }}
-        </span>
-        <span v-html="icons['camera']" />
+        <template v-if="isAlert">
+          {{ alertDescription }}
+        </template>
+        <template v-else>
+          {{ getLocationName(item.runLocation) }}
+          <img
+            class="h-5 ml-2"
+            :src="getLocationFlag(item.runLocation)"
+          >
+          <span class="mx-4 text-xs text-slate-400">
+            {{ formatDuration(item.responseTime, { showUnit: true }) }}
+          </span>
+          <span v-html="icons['camera']" />
+        </template>
       </p>
     </div>
     {{ formatTimestamp(item.eventType ? item.payload.created_at : item.created_at) }}
@@ -45,5 +50,9 @@ const icon = computed(() => {
     return props.item.payload.alertType === 'ALERT_FAILURE' ? icons['circle-failure'] : icons['circle-success']
   }
   return props.item.hasErrors || props.item.hasFailures ? icons['circle-failure'] : icons['circle-success']
+})
+
+const alertDescription = computed(() => {
+  return props.item.payload.alertType === 'ALERT_FAILURE' ? 'Failure Alert' : 'Recovery Alert'
 })
 </script>
