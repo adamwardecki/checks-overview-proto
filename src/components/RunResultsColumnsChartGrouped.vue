@@ -148,8 +148,13 @@ const defaultOptions = computed(() => ({
       data: getResults(resultTypes.degraded),
       color: '#F5A623',
     }],
+
   credits: {
     enabled: false,
+  },
+
+  tooltip: {
+    split: false,
   },
 }))
 </script>

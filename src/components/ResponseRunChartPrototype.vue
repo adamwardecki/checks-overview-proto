@@ -145,6 +145,7 @@ const prototypeOptions = {
   },
 
   tooltip: {
+    split: false,
     valueDecimals: 0,
     valueSuffix: ' ms',
   },
