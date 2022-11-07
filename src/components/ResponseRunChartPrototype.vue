@@ -10,6 +10,7 @@
     </div>
     <highcharts
       class="check-run-chart"
+      constructor-type="stockChart"
       :options="prototypeOptions"
       :callback="insertDrawerButton"
     />
@@ -33,7 +34,6 @@ const prototypeOptions = {
     marginTop: 60,
     events: {
       render () {
-        console.log('fire render')
         emit('set:period', this.xAxis[0].getExtremes())
       },
     },
@@ -93,22 +93,40 @@ const prototypeOptions = {
               marker: { lineColor: '#BF0B23', lineWidth: 2 },
             }
           : {}),
-      })),
+      })).sort((a, b) => a.x - b.x),
       lineWidth: 1,
       color: '#333',
     },
   ],
-  legend: {
+
+  rangeSelector: {
     enabled: false,
   },
-  credits: {
-    enabled: false,
-  },
+
   navigator: {
     enabled: false,
   },
+
+  legend: {
+    enabled: false,
+  },
+
+  scrollbar: {
+    enabled: false,
+  },
+
+  credits: {
+    enabled: false,
+  },
+
   plotOptions: {
     series: {
+      dataGrouping: {
+        forced: true,
+        units: [
+          ['hour', [1, 3, 6, 12]],
+        ],
+      },
       marker: {
         radius: 3,
         lineColor: '#000',

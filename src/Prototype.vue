@@ -19,7 +19,10 @@
         @set:period="selectedPeriod = $event"
       />
 
-      <RunResultsColumnsChart :set-extremes="syncExtremes" />
+      <RunResultsColumnsChartGrouped
+        :results="results"
+        :set-extremes="syncExtremes"
+      />
     </div>
   </div>
 </template>
@@ -28,7 +31,7 @@
 import Highcharts from 'highcharts'
 import { ref, onMounted } from 'vue'
 import { results } from './fixtures/moreData'
-import RunResultsColumnsChart from './components/RunResultsColumnsChart.vue'
+import RunResultsColumnsChartGrouped from './components/RunResultsColumnsChartGrouped.vue'
 import ResponseRunChartPrototype from './components/ResponseRunChartPrototype.vue'
 import Drawer from './components/Drawer.vue'
 
