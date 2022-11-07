@@ -10,6 +10,7 @@
       </p>
     </div>
     <highcharts
+      class="pl-6"
       :options="defaultOptions"
       constructor-type="stockChart"
     />
@@ -118,7 +119,7 @@ const defaultOptions = computed(() => ({
       dataGrouping: {
         forced: true,
         units: [
-          ['minute', [5, 15, 30, 45, 60]],
+          ['minute', [30, 45, 60]],
         ],
       },
     },
@@ -133,19 +134,16 @@ const defaultOptions = computed(() => ({
   series: [
     {
       name: 'Success',
-      // pointInterval: 86400000,
       data: getResults(resultTypes.success),
       color: '#5ced73',
     },
     {
       name: 'Failure',
-      // pointInterval: 86400000,
       data: getResults(resultTypes.failure),
       color: '#BF0B23',
     },
     {
       name: 'Degraded',
-      // pointInterval: 86400000,
       data: getResults(resultTypes.degraded),
       color: '#F5A623',
     }],
