@@ -118,7 +118,7 @@ const defaultOptions = computed(() => ({
       dataGrouping: {
         forced: true,
         units: [
-          ['hour', [1, 3, 6, 12]],
+          ['minute', [5, 15, 30, 45, 60]],
         ],
       },
     },
