@@ -75,6 +75,7 @@ const prototypeOptions = {
     events: {
       setExtremes: props.setExtremes,
     },
+    tickLength: 0,
   },
   yAxis: {
     opposite: false,

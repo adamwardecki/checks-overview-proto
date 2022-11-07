@@ -91,6 +91,7 @@ const defaultOptions = computed(() => ({
     events: {
       setExtremes: props.setExtremes,
     },
+    tickLength: 0,
   },
 
   rangeSelector: {
