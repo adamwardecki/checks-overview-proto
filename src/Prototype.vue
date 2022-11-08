@@ -38,6 +38,21 @@ import RunResultsColumnsChartGrouped from './components/RunResultsColumnsChartGr
 import ResponseRunChartPrototype from './components/ResponseRunChartPrototype.vue'
 import Drawer from './components/Drawer.vue'
 
+const isDrawerOpen = ref(false)
+const selectedPeriod = ref({})
+
+function toggleDrawer () {
+  document.querySelector('.check-details-button').innerText = `${isDrawerOpen.value ? 'Show' : 'Hide'} details`
+  isDrawerOpen.value = !isDrawerOpen.value
+}
+
+function openDrawer () {
+  if (!isDrawerOpen.value) {
+    isDrawerOpen.value = true
+    document.querySelector('.check-details-button').innerText = 'Hide details'
+  }
+}
+
 /**
  * In order to synchronize tooltips and crosshairs, override the
  * built-in events with handlers defined on the parent element.
@@ -112,19 +127,4 @@ function syncExtremes (e) {
 onMounted(() => {
   overrideChartEventHandlers()
 })
-
-const isDrawerOpen = ref(false)
-const selectedPeriod = ref({})
-
-function toggleDrawer () {
-  document.querySelector('.check-details-button').innerText = `${isDrawerOpen.value ? 'Show' : 'Hide'} details`
-  isDrawerOpen.value = !isDrawerOpen.value
-}
-
-function openDrawer () {
-  if (!isDrawerOpen.value) {
-    isDrawerOpen.value = true
-    document.querySelector('.check-details-button').innerText = 'Hide details'
-  }
-}
 </script>
