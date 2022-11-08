@@ -38,19 +38,19 @@ for (const result of props.results) {
   if (!result.hasFailures && !result.isDegraded) resultTypes.success.push(result)
 }
 
-const getAlerts = (events) => events
-  .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-  .reduce(function (acc, value, index, array) {
-    if (index % 2 === 0) {
-      value.from = new Date(value.timestamp).getTime()
-      // result.push(array.slice(index, index + 2))
-    } else {
-      value.to = new Date(value.timestamp).getTime()
-    }
-    acc.push(value)
-    return acc
-  }, [])
-console.log(getAlerts(props.events))
+// const getAlerts = (events) => events
+//   .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+//   .reduce(function (acc, value, index, array) {
+//     if (index % 2 === 0) {
+//       value.from = new Date(value.timestamp).getTime()
+//       // result.push(array.slice(index, index + 2))
+//     } else {
+//       value.to = new Date(value.timestamp).getTime()
+//     }
+//     acc.push(value)
+//     return acc
+//   }, [])
+// console.log(getAlerts(props.events))
 // eslint-disable-next-line no-unused-vars
 const getResults = (resultTypes) => resultTypes.map(({ startedAt }) => (
   [new Date(startedAt).getTime(), 1]
