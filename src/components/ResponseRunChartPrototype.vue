@@ -124,7 +124,7 @@ const prototypeOptions = {
       dataGrouping: {
         forced: true,
         units: [
-          ['minute', [30, 45, 60]],
+          ['minute', [5, 30, 45, 60]],
         ],
       },
       marker: {

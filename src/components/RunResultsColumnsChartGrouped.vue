@@ -118,7 +118,7 @@ const defaultOptions = computed(() => ({
       dataGrouping: {
         forced: true,
         units: [
-          ['minute', [30, 45, 60]],
+          ['minute', [5, 30, 45, 60]],
         ],
       },
       point: {
