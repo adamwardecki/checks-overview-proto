@@ -1,13 +1,9 @@
 <template>
-  <div class="py-8">
+  <div class="py-6">
     <div class="text-left">
       <h3 class="text-xl font-semibold">
         Check Run Results
       </h3>
-      <p>
-        Stacked column chart with run results segmented by success, failure, and
-        degraded.
-      </p>
     </div>
     <highcharts
       class="pl-6"
@@ -136,7 +132,7 @@ const defaultOptions = computed(() => ({
     {
       name: 'Success',
       data: getResults(resultTypes.success),
-      color: '#5ced73',
+      color: '#A3B3C2',
     },
     {
       name: 'Failure',

@@ -5,7 +5,7 @@
     @toggle:drawer="toggleDrawer"
   />
   <div class="px-8">
-    <div class="py-10">
+    <div class="py-4">
       <h2 class="text-2xl font-semibold">
         Check Overview
       </h2>

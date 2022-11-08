@@ -1,12 +1,9 @@
 <template>
-  <div class="py-8">
+  <div class="py-6">
     <div class="text-left">
       <h3 class="text-xl font-semibold">
         Check Runs Duration
       </h3>
-      <p>
-        Shows the duration of the runs.
-      </p>
     </div>
     <highcharts
       class="check-run-chart"
@@ -32,6 +29,7 @@ const prototypeOptions = {
   },
   chart: {
     marginTop: 60,
+    height: 300,
     events: {
       render () {
         emit('set:period', this.xAxis[0].getExtremes())

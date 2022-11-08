@@ -1,6 +1,6 @@
 
 <template>
-  <nav class="pb-8">
+  <nav class="px-8 pt-4 text-left">
     <a href="#/">Playground</a> |
     <a href="#/prototype">Prototype</a>
   </nav>
