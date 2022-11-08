@@ -16,12 +16,15 @@
         :set-extremes="syncExtremes"
         :is-drawer-open="isDrawerOpen"
         @toggle:drawer="toggleDrawer"
+        @open:drawer="openDrawer"
         @set:period="selectedPeriod = $event"
       />
 
       <RunResultsColumnsChartGrouped
         :results="results"
         :set-extremes="syncExtremes"
+        @set:period="selectedPeriod = $event"
+        @open:drawer="openDrawer"
       />
     </div>
   </div>
@@ -116,5 +119,12 @@ const selectedPeriod = ref({})
 function toggleDrawer () {
   document.querySelector('.check-details-button').innerText = `${isDrawerOpen.value ? 'Show' : 'Hide'} details`
   isDrawerOpen.value = !isDrawerOpen.value
+}
+
+function openDrawer () {
+  if (!isDrawerOpen.value) {
+    isDrawerOpen.value = true
+    document.querySelector('.check-details-button').innerText = 'Hide details'
+  }
 }
 </script>

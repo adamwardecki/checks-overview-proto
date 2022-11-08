@@ -1,5 +1,10 @@
 <template>
-  <div class="flex items-center justify-between p-2 font-semibold border-b last:border-b-0 border-slate-300">
+  <div
+    class="flex items-center justify-between p-2 font-semibold border-b last:border-b-0 border-slate-300"
+    :class="{
+      'bg-[rgba(255,0,0,0.1)]': isFailure,
+    }"
+  >
     <div class="flex items-center w-3/4">
       <span
         class="mr-5"
@@ -41,16 +46,16 @@ function formatTimestamp (timestamp) {
   return moment(timestamp).format('HH:mm:ss')
 }
 
-const isAlert = computed(() => {
-  return props.item.eventType
+const isAlert = computed(() => props.item.eventType)
+
+const isFailure = computed(() => {
+  if (isAlert.value) {
+    return props.item.payload.alertType === 'ALERT_FAILURE'
+  }
+  return props.item.hasErrors || props.item.hasFailures
 })
 
-const icon = computed(() => {
-  if (isAlert.value) {
-    return props.item.payload.alertType === 'ALERT_FAILURE' ? icons['circle-failure'] : icons['circle-success']
-  }
-  return props.item.hasErrors || props.item.hasFailures ? icons['circle-failure'] : icons['circle-success']
-})
+const icon = computed(() => isFailure.value ? icons['circle-failure'] : icons['circle-success'])
 
 const alertDescription = computed(() => {
   return props.item.payload.alertType === 'ALERT_FAILURE' ? 'Failure Alert' : 'Recovery Alert'
