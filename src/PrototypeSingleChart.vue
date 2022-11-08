@@ -13,9 +13,8 @@
     <div id="container">
       <ResponseRunsChartWithDrawer
         :results="results"
+        @set:period="selectedPeriod = $event"
         @open:drawer="openDrawer"
-        @select:period="setPeriod($event)"
-        @toggle:drawer="toggleDrawer"
       />
     </div>
   </div>
