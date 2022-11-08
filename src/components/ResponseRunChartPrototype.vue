@@ -61,12 +61,12 @@ const prototypeOptions = {
     plotBands: [
       {
         color: 'rgba(255, 0, 0, 0.1)', // Color value
-        from: new Date('2022-09-28T19:20:00.234Z').getTime(), // Start of the plot band
-        to: new Date('2022-09-28T19:28:44.665Z').getTime(), // End of the plot band
+        from: new Date('2022-09-28T19:15:00.234Z').getTime(), // Start of the plot band
+        to: new Date('2022-09-28T19:38:44.665Z').getTime(), // End of the plot band
       },
       {
         color: 'rgba(255, 0, 0, 0.1)', // Color value
-        from: new Date('2022-09-28T12:59:18.478Z').getTime(), // Start of the plot band
+        from: new Date('2022-09-28T12:50:18.478Z').getTime(), // Start of the plot band
         to: new Date('2022-09-28T13:08:42.767Z').getTime(), // End of the plot band
       }],
     crosshair: true,
