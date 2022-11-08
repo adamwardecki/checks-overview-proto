@@ -24,7 +24,7 @@ const props = defineProps({
   results: Array,
 })
 
-const emit = defineEmits(['toggle:drawer', 'set:period'])
+const emit = defineEmits(['toggle:drawer', 'set:period', 'open:drawer'])
 
 const prototypeOptions = {
   title: {
@@ -141,6 +141,22 @@ const prototypeOptions = {
           },
         },
       },
+      point: {
+        events: {
+          click () {
+            const endTime = this.series.xAxis.series[0].points[this.index + 1]
+              ? this.series.xAxis.series[0].points[this.index + 1].x
+              : this.series.xAxis.dataMax
+
+            emit('set:period', {
+              min: this.x,
+              max: endTime,
+            })
+
+            emit('open:drawer')
+          },
+        },
+      },
     },
   },
 
@@ -159,6 +175,7 @@ function insertDrawerButton (chart) {
 
   button.addEventListener('click', () => {
     emit('toggle:drawer')
+    emit('set:period', this.xAxis[0].getExtremes())
     button.innerText = `${props.isDrawerOpen ? 'Show' : 'Hide'} details`
   })
 
