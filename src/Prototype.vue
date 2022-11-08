@@ -23,6 +23,8 @@
       <RunResultsColumnsChartGrouped
         :results="results"
         :set-extremes="syncExtremes"
+        @set:period="selectedPeriod = $event"
+        @open:drawer="openDrawer"
       />
     </div>
   </div>

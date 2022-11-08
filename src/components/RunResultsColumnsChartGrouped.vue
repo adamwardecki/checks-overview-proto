@@ -26,6 +26,8 @@ const props = defineProps({
   results: Array,
 })
 
+const emit = defineEmits(['set:period', 'open:drawer'])
+
 const resultTypes = {
   failure: [],
   degraded: [],
@@ -123,6 +125,22 @@ const defaultOptions = computed(() => ({
           ['minute', [30, 45, 60]],
         ],
       },
+      point: {
+        events: {
+          click () {
+            const endTime = this.series.xAxis.series[0].points[this.index + 1]
+              ? this.series.xAxis.series[0].points[this.index + 1].x
+              : this.series.xAxis.dataMax
+
+            emit('set:period', {
+              min: this.x,
+              max: endTime,
+            })
+
+            emit('open:drawer')
+          },
+        },
+      },
     },
     column: {
       stacking: 'normal',
@@ -130,6 +148,7 @@ const defaultOptions = computed(() => ({
         enabled: false,
       },
     },
+
   },
 
   series: [
