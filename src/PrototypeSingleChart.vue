@@ -15,6 +15,7 @@
         :results="results"
         @set:period="selectedPeriod = $event"
         @open:drawer="openDrawer"
+        @toggle:drawer="toggleDrawer"
       />
     </div>
   </div>
