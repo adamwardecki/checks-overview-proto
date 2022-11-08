@@ -13,6 +13,7 @@
     <div id="container">
       <ResponseRunsChartWithDrawer
         :results="results"
+        :events="events"
         @open:drawer="openDrawer"
         @select:period="setPeriod($event)"
         @toggle:drawer="toggleDrawer"
@@ -23,7 +24,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { results } from './fixtures/moreData'
+import { results, events } from './fixtures/moreData'
 import Drawer from './components/Drawer.vue'
 import ResponseRunsChartWithDrawer from './components/ResponseRunsChartWithDrawer.vue'
 
