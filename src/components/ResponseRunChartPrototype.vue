@@ -15,6 +15,8 @@
 </template>
 
 <script setup>
+import { formatDuration } from '../fixtures/helpers'
+
 const props = defineProps({
   isDrawerOpen: Boolean,
   setExtremes: Function,
@@ -72,11 +74,16 @@ const prototypeOptions = {
   yAxis: {
     opposite: false,
     title: '',
+    labels: {
+      formatter () {
+        return formatDuration(this.value, { showUnit: true })
+      },
+    },
   },
   series: [
     {
       id: 'resp-time',
-      name: 'Response Time',
+      name: 'Response time',
       data: props.results.map((result) => ({
         x: new Date(result.created_at).getTime(),
         y: result.responseTime,
@@ -151,11 +158,15 @@ const prototypeOptions = {
       },
     },
   },
-
   tooltip: {
     split: false,
-    valueDecimals: 0,
-    valueSuffix: ' ms',
+    formatter () {
+      return `
+        <div>
+          ${this.series.name}: ${formatDuration(this.y, { showUnit: true })}<br/>
+        </div>
+      `
+    },
   },
 }
 

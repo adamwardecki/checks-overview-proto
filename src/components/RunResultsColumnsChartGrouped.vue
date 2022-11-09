@@ -157,17 +157,17 @@ const defaultOptions = computed(() => ({
 
   series: [
     {
-      name: 'Success',
+      name: 'Successful check runs',
       data: getResults(resultTypes.success),
       color: '#A3B3C2',
     },
     {
-      name: 'Failure',
+      name: 'Failed check runs',
       data: getResults(resultTypes.failure),
       color: '#BF0B23',
     },
     {
-      name: 'Degraded',
+      name: 'Degraded check runs',
       data: getResults(resultTypes.degraded),
       color: '#F5A623',
     }],
@@ -177,7 +177,7 @@ const defaultOptions = computed(() => ({
   },
 
   tooltip: {
-    split: false,
+    valueDecimals: 0,
   },
 }))
 </script>
