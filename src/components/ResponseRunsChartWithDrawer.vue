@@ -194,8 +194,16 @@ const defaultOptions = computed(() => {
         point: {
           events: {
             click () {
-              const endTime = this.series.xAxis.series[0].points[this.index + 1]
-                ? this.series.xAxis.series[0].points[this.index + 1].x
+              let index = null
+
+              if (this.series.stackKey) {
+                index = this.series.xAxis.series[0].points.find(point => point.x === this.x).index
+              } else {
+                index = this.index
+              }
+
+              const endTime = this.series.xAxis.series[0].points[index + 1]
+                ? this.series.xAxis.series[0].points[index + 1].x
                 : this.series.xAxis.dataMax
 
               emit('set:period', {

@@ -28,11 +28,18 @@
     </div>
 
     <div>
-      <TimelineItem
-        v-for="(item, index) in filteredItems"
-        :key="index"
-        :item="item"
-      />
+      <template v-if="filteredItems.length">
+        <TimelineItem
+          v-for="(item, index) in filteredItems"
+          :key="index"
+          :item="item"
+        />
+      </template>
+      <template v-else>
+        <p class="text-sm text-slate-500">
+          No matching results or alerts found.
+        </p>
+      </template>
     </div>
   </aside>
 </template>
