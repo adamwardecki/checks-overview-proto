@@ -177,14 +177,7 @@ const defaultOptions = computed(() => ({
   },
 
   tooltip: {
-    split: false,
-    formatter () {
-      return `
-        <div>
-          ${this.series.name}: ${this.y}<br/>
-        </div>
-      `
-    },
+    valueDecimals: 0,
   },
 }))
 </script>

@@ -94,7 +94,7 @@ const prototypeOptions = {
   series: [
     {
       id: 'resp-time',
-      name: 'Response Time',
+      name: 'Response time',
       data: props.results.map((result) => ({
         x: new Date(result.created_at).getTime(),
         y: result.responseTime,

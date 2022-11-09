@@ -16,6 +16,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { formatDuration } from '../fixtures/helpers'
 
 const props = defineProps({
   isDrawerOpen: Boolean,
@@ -86,6 +87,9 @@ const defaultOptions = computed(() => {
       {
         labels: {
           align: 'left',
+          formatter () {
+            return formatDuration(this.value, { showUnit: true })
+          },
         },
         height: '80%',
       },
@@ -106,7 +110,7 @@ const defaultOptions = computed(() => {
     series: [
       {
         id: 'resp-time',
-        name: 'Response Time',
+        name: 'Response time',
         data: props.results.map((result) => ({
           x: new Date(result.created_at).getTime(),
           y: result.responseTime,
@@ -121,7 +125,7 @@ const defaultOptions = computed(() => {
         color: '#333',
       },
       {
-        name: 'Success',
+        name: 'Successful check runs',
         data: getResults(resultTypes.success),
         color: '#A3B3C2',
         type: 'column',
@@ -129,7 +133,7 @@ const defaultOptions = computed(() => {
         lineWidth: 1,
       },
       {
-        name: 'Failure',
+        name: 'Failed check runs',
         data: getResults(resultTypes.failure),
         color: '#BF0B23',
         type: 'column',
@@ -137,7 +141,7 @@ const defaultOptions = computed(() => {
         lineWidth: 1,
       },
       {
-        name: 'Degraded',
+        name: 'Degraded check runs',
         data: getResults(resultTypes.degraded),
         color: '#F5A623',
         type: 'column',
