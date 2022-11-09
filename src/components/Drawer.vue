@@ -21,9 +21,9 @@
       <FilterItem
         v-for="(filterItem, index) in filters"
         :key="index"
-        :name="filterItem.name"
-        :active="filterItem.active"
-        @click="filterItem.active = !filterItem.active"
+        :name="filterItem"
+        :active="filterBy.includes(filterItem)"
+        @click="toggleFilter(filterItem)"
       />
     </div>
 
@@ -52,16 +52,16 @@ const props = defineProps({
 
 const emit = defineEmits(['toggle:drawer'])
 
-const filters = ref({
-  results: {
-    name: 'Run results',
-    active: false,
-  },
-  alerts: {
-    name: 'Alerts',
-    active: false,
-  },
-})
+const filters = ref(['Results', 'Alerts', 'Failures'])
+const filterBy = ref([])
+
+function toggleFilter (item) {
+  if (filterBy.value.includes(item)) {
+    filterBy.value.splice(filterBy.value.indexOf(item), 1)
+  } else {
+    filterBy.value.push(item)
+  }
+}
 
 function getCreatedAt (item) {
   return item.payload ? item.payload.created_at : item.created_at
@@ -76,16 +76,23 @@ function compare (a, b) {
   return 0
 }
 
-function isAlert (item) {
-  return item.eventType
-}
-
 const formattedPeriod = computed(() => {
   const startTime = moment(props.selectedPeriod.min).format('MMM DD HH:mm:ss')
   const endTime = moment(props.selectedPeriod.max).format('MMM DD HH:mm:ss')
 
   return `${startTime} - ${endTime}`
 })
+
+function isAlert (item) {
+  return item.eventType
+}
+
+function isFailure (item) {
+  if (isAlert(item)) {
+    return item.payload.alertType === 'ALERT_FAILURE'
+  }
+  return item.hasErrors || item.hasFailures
+}
 
 const sortedItems = computed(() => {
   // sort array by date, order: newest => oldest
@@ -100,12 +107,30 @@ const selectedItems = computed(() => {
 })
 
 const filteredItems = computed(() => {
-  if (!filters.value.results.active && !filters.value.alerts.active) {
-    return selectedItems.value
+  if (filterBy.value.length) {
+    return selectedItems.value.filter(item => {
+      if (filterBy.value.includes('Failures') && !filterBy.value.includes('Alerts') && !filterBy.value.includes('Results')) {
+        return isFailure(item)
+      }
+
+      if (filterBy.value.includes('Alerts') && isAlert(item)) {
+        if (filterBy.value.includes('Failures')) {
+          return isFailure(item)
+        }
+        return item
+      }
+
+      if (filterBy.value.includes('Results') && !isAlert(item)) {
+        if (filterBy.value.includes('Failures')) {
+          return isFailure(item)
+        }
+        return item
+      }
+
+      return false
+    })
   }
-  return selectedItems.value.filter(item =>
-    (filters.value.alerts.active && isAlert(item)) || (filters.value.results.active && !isAlert(item)),
-  )
+  return selectedItems.value
 })
 </script>
 
