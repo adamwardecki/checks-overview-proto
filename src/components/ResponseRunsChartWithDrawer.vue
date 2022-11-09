@@ -119,7 +119,6 @@ const defaultOptions = computed(() => {
         })).sort((a, b) => a.x - b.x),
         lineWidth: 1,
         color: '#333',
-        gapSize: 1,
       },
       {
         name: 'Success',
