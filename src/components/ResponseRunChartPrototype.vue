@@ -21,9 +21,14 @@ const props = defineProps({
   isDrawerOpen: Boolean,
   setExtremes: Function,
   results: Array,
+  timestamps: Array,
 })
 
 const emit = defineEmits(['toggle:drawer', 'set:period', 'open:drawer'])
+
+const dummyColumn = props.timestamps.sort((a, b) => new Date(a).getTime() - new Date(b).getTime()).map((timestamp) => (
+  { x: new Date(timestamp).getTime(), y: 1 }
+))
 
 const prototypeOptions = {
   title: {
@@ -96,6 +101,17 @@ const prototypeOptions = {
       })).sort((a, b) => a.x - b.x),
       lineWidth: 1,
       color: '#333',
+    },
+    {
+      id: 'dummy',
+      name: '',
+      lineWidth: 0,
+      data: dummyColumn,
+      marker: {
+        lineColor: '#ffffff',
+        enabled: false,
+      },
+      enableMouseTracking: false,
     },
   ],
   legend: {

@@ -20,6 +20,7 @@ import { computed } from 'vue'
 const props = defineProps({
   setExtremes: Function,
   results: Array,
+  timestamps: Array,
 })
 
 const emit = defineEmits(['set:period', 'open:drawer'])
@@ -40,6 +41,10 @@ for (const result of props.results) {
 const getResults = (resultTypes) => resultTypes.map(({ startedAt }) => (
   [new Date(startedAt).getTime(), 1]
 )).sort((a, b) => a[0] - b[0])
+
+const dummyColumn = props.timestamps.sort((a, b) => new Date(a).getTime() - new Date(b).getTime()).map((timestamp) => (
+  { x: new Date(timestamp).getTime(), y: 0 }
+))
 
 const defaultOptions = computed(() => ({
   chart: {
@@ -170,7 +175,15 @@ const defaultOptions = computed(() => ({
       name: 'Degraded check runs',
       data: getResults(resultTypes.degraded),
       color: '#F5A623',
-    }],
+    },
+    {
+      name: '',
+      data: dummyColumn,
+      type: 'column',
+      lineWidth: 0,
+      enableMouseTracking: false,
+    },
+  ],
 
   credits: {
     enabled: false,

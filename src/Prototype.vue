@@ -13,6 +13,7 @@
     <div id="container">
       <ResponseRunChartPrototype
         :results="results"
+        :timestamps="createdAtTimeStamps"
         :set-extremes="syncExtremes"
         :is-drawer-open="isDrawerOpen"
         @toggle:drawer="toggleDrawer"
@@ -21,6 +22,7 @@
       />
 
       <RunResultsColumnsChartGrouped
+        :timestamps="createdAtTimeStamps"
         :results="results"
         :set-extremes="syncExtremes"
         @set:period="selectedPeriod = $event"
@@ -33,7 +35,7 @@
 <script setup>
 import Highcharts from 'highcharts'
 import { ref, onMounted } from 'vue'
-import { results } from './fixtures/moreData'
+import { results, createdAtTimeStamps } from './fixtures/moreData'
 import RunResultsColumnsChartGrouped from './components/RunResultsColumnsChartGrouped.vue'
 import ResponseRunChartPrototype from './components/ResponseRunChartPrototype.vue'
 import Drawer from './components/Drawer.vue'
