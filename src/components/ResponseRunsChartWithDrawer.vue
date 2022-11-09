@@ -21,6 +21,7 @@ const props = defineProps({
   isDrawerOpen: Boolean,
   results: Array,
   events: Array,
+  timestamps: Array,
 })
 
 const emit = defineEmits(['set:period', 'open:drawer', 'toggle:drawer'])
@@ -41,6 +42,10 @@ for (const result of props.results) {
 const getResults = (resultTypes) => resultTypes.map(({ startedAt }) => (
   [new Date(startedAt).getTime(), 1]
 )).sort((a, b) => a[0] - b[0])
+
+const dummyColumn = props.timestamps.sort((a, b) => new Date(a).getTime() - new Date(b).getTime()).map((timestamp) => (
+  { x: new Date(timestamp).getTime(), y: 1 }
+))
 
 const defaultOptions = computed(() => {
   return {
@@ -114,6 +119,7 @@ const defaultOptions = computed(() => {
         })).sort((a, b) => a.x - b.x),
         lineWidth: 1,
         color: '#333',
+        gapSize: 1,
       },
       {
         name: 'Success',
@@ -138,6 +144,13 @@ const defaultOptions = computed(() => {
         type: 'column',
         yAxis: 1,
         lineWidth: 1,
+      },
+      {
+        name: '',
+        data: dummyColumn,
+        type: 'column',
+        lineWidth: 0,
+        enableMouseTracking: false,
       },
     ],
     rangeSelector: {

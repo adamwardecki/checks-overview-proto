@@ -12,6 +12,7 @@
     </div>
     <div id="container">
       <ResponseRunsChartWithDrawer
+        :timestamps="createdAtTimeStamps"
         :results="results"
         :events="events"
         @set:period="selectedPeriod = $event"
@@ -24,7 +25,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { results, events } from './fixtures/moreData'
+import { results, events, createdAtTimeStamps } from './fixtures/moreData'
 import Drawer from './components/Drawer.vue'
 import ResponseRunsChartWithDrawer from './components/ResponseRunsChartWithDrawer.vue'
 
