@@ -34,6 +34,11 @@ const prototypeOptions = {
       render () {
         emit('set:period', this.xAxis[0].getExtremes())
       },
+      redraw () {
+        const plotLinesAndBandsIds = this.xAxis[0].plotLinesAndBands.map(({ id }) => id)
+        updatePlotLinesWidth(this.xAxis[0], plotLinesAndBandsIds)
+        addPlotLines(this.xAxis[0])
+      },
     },
     zoomType: 'x',
     zooming: {
@@ -163,6 +168,35 @@ const prototypeOptions = {
     valueDecimals: 0,
     valueSuffix: ' ms',
   },
+}
+
+function updatePlotLinesWidth (xAxisSerie, plotLinesAndBandsIds) {
+  for (const existingPlotLine of plotLinesAndBandsIds) {
+    xAxisSerie.removePlotLine(existingPlotLine)
+  }
+}
+
+const failureResults = props.results.filter((result) => result.hasFailures)
+function addPlotLines (xAxisSerie) {
+  const chartColumnEl = document.querySelector('.highcharts-column-series .highcharts-point')
+  const pointWidth = Math.round(chartColumnEl?.point?.pointWidth)
+  const delta = xAxisSerie.closestPointRange
+  const dataRanges = xAxisSerie.series[0].processedXData
+
+  for (const failure of failureResults) {
+    const failureStarted = new Date(failure.created_at).getTime()
+
+    for (const dataRange of dataRanges) {
+      if (failureStarted >= dataRange && failureStarted <= dataRange + delta) {
+        xAxisSerie.addPlotLine({
+          value: dataRange,
+          color: 'rgba(255, 0, 0, 0.1)',
+          width: Number(pointWidth + pointWidth * 0.3),
+          id: failure.id,
+        })
+      }
+    }
+  }
 }
 
 function insertDrawerButton (chart) {
