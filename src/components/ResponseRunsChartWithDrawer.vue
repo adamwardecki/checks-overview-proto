@@ -47,6 +47,20 @@ const dummyColumn = props.timestamps.sort((a, b) => new Date(a).getTime() - new 
   { x: new Date(timestamp).getTime(), y: 1 }
 ))
 
+const successResults = getResults(resultTypes.success)
+const failureResults = getResults(resultTypes.failure)
+const degradedResults = getResults(resultTypes.degraded)
+const lineResults = props.results.map((result) => ({
+  x: new Date(result.created_at).getTime(),
+  y: result.responseTime,
+  ...(result.hasFailures
+    ? {
+        color: '#BF0B23',
+        marker: { lineColor: '#BF0B23', lineWidth: 2 },
+      }
+    : {}),
+})).sort((a, b) => a.x - b.x)
+
 const defaultOptions = computed(() => {
   return {
     chart: {
@@ -107,22 +121,13 @@ const defaultOptions = computed(() => {
       {
         id: 'resp-time',
         name: 'Response Time',
-        data: props.results.map((result) => ({
-          x: new Date(result.created_at).getTime(),
-          y: result.responseTime,
-          ...(result.hasFailures
-            ? {
-                color: '#BF0B23',
-                marker: { lineColor: '#BF0B23', lineWidth: 2 },
-              }
-            : {}),
-        })).sort((a, b) => a.x - b.x),
+        data: lineResults,
         lineWidth: 1,
         color: '#333',
       },
       {
         name: 'Success',
-        data: getResults(resultTypes.success),
+        data: successResults,
         color: '#A3B3C2',
         type: 'column',
         yAxis: 1,
@@ -130,7 +135,7 @@ const defaultOptions = computed(() => {
       },
       {
         name: 'Failure',
-        data: getResults(resultTypes.failure),
+        data: failureResults,
         color: '#BF0B23',
         type: 'column',
         yAxis: 1,
@@ -138,7 +143,7 @@ const defaultOptions = computed(() => {
       },
       {
         name: 'Degraded',
-        data: getResults(resultTypes.degraded),
+        data: degradedResults,
         color: '#F5A623',
         type: 'column',
         yAxis: 1,
@@ -187,7 +192,7 @@ const defaultOptions = computed(() => {
         dataGrouping: {
           forced: true,
           units: [
-            ['minute', [5, 30, 45, 60]],
+            ['minute', [30, 45, 60]],
           ],
         },
         point: {
