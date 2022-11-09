@@ -9,7 +9,7 @@
       class="check-runs-durations"
       constructor-type="stockChart"
       :options="defaultOptions"
-      :callback="insertDrawerButton"
+      :callback="setupChart"
     />
   </div>
 </template>
@@ -19,7 +19,6 @@ import { computed } from 'vue'
 
 const props = defineProps({
   isDrawerOpen: Boolean,
-  setExtremes: Function,
   results: Array,
   events: Array,
 })
@@ -38,19 +37,6 @@ for (const result of props.results) {
   if (!result.hasFailures && !result.isDegraded) resultTypes.success.push(result)
 }
 
-// const getAlerts = (events) => events
-//   .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-//   .reduce(function (acc, value, index, array) {
-//     if (index % 2 === 0) {
-//       value.from = new Date(value.timestamp).getTime()
-//       // result.push(array.slice(index, index + 2))
-//     } else {
-//       value.to = new Date(value.timestamp).getTime()
-//     }
-//     acc.push(value)
-//     return acc
-//   }, [])
-// console.log(getAlerts(props.events))
 // eslint-disable-next-line no-unused-vars
 const getResults = (resultTypes) => resultTypes.map(({ startedAt }) => (
   [new Date(startedAt).getTime(), 1]
@@ -63,6 +49,11 @@ const defaultOptions = computed(() => {
       events: {
         render () {
           emit('set:period', this.xAxis[0].getExtremes())
+        },
+        redraw () {
+          const plotLinesAndBandsIds = this.xAxis[0].plotLinesAndBands.map(({ id }) => id)
+          updatePlotLinesWidth(this.xAxis[0], plotLinesAndBandsIds)
+          addPlotLines(this.xAxis[0])
         },
       },
       zoomType: 'x',
@@ -104,21 +95,7 @@ const defaultOptions = computed(() => {
     ],
     xAxis: {
       type: 'datetime',
-      plotBands: [
-        {
-          color: 'rgba(255, 0, 0, 0.1)', // Color value
-          from: new Date('2022-09-28T19:15:00.234Z').getTime(), // Start of the plot band
-          to: new Date('2022-09-28T19:38:44.665Z').getTime(), // End of the plot band
-        },
-        {
-          color: 'rgba(255, 0, 0, 0.1)', // Color value
-          from: new Date('2022-09-28T12:50:18.478Z').getTime(), // Start of the plot band
-          to: new Date('2022-09-28T13:08:42.767Z').getTime(), // End of the plot band
-        }],
       crosshair: true,
-      events: {
-        setExtremes: props.setExtremes,
-      },
       tickLength: 0,
     },
     series: [
@@ -244,5 +221,38 @@ function insertDrawerButton (chart) {
   })
 
   document.querySelector('.check-runs-durations .highcharts-container').appendChild(button)
+}
+
+function updatePlotLinesWidth (xAxisSerie, plotLinesAndBandsIds) {
+  for (const existingPlotLine of plotLinesAndBandsIds) {
+    xAxisSerie.removePlotLine(existingPlotLine)
+  }
+}
+
+function addPlotLines (xAxisSerie) {
+  const chartColumnEl = document.querySelector('.highcharts-column-series .highcharts-point')
+  const pointWidth = Math.round(chartColumnEl?.point?.pointWidth)
+  const delta = xAxisSerie.closestPointRange
+  const dataRanges = xAxisSerie.series[0].processedXData
+
+  for (const failure of resultTypes.failure) {
+    const failureStarted = new Date(failure.created_at).getTime()
+
+    for (const dataRange of dataRanges) {
+      if (failureStarted >= dataRange && failureStarted <= dataRange + delta) {
+        xAxisSerie.addPlotLine({
+          value: dataRange,
+          color: 'rgba(255, 0, 0, 0.1)',
+          width: Number(pointWidth + pointWidth * 0.3),
+          id: failure.id,
+        })
+      }
+    }
+  }
+}
+
+function setupChart (chart) {
+  insertDrawerButton(chart)
+  addPlotLines(chart.xAxis[0])
 }
 </script>
