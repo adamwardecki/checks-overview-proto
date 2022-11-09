@@ -16,4 +16,8 @@ module.exports = {
     '@checkly/eslint-config',
     '@checkly/eslint-config/vue',
   ],
+  rules: {
+    'vue/custom-event-name-casing': 'off',
+    'vue/no-v-html': 'off',
+  },
 }
