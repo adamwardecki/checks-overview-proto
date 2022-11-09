@@ -9,7 +9,7 @@
       class="check-run-chart"
       constructor-type="stockChart"
       :options="prototypeOptions"
-      :callback="insertDrawerButton"
+      :callback="setupChart"
     />
   </div>
 </template>
@@ -63,17 +63,6 @@ const prototypeOptions = {
   },
   xAxis: {
     type: 'datetime',
-    plotBands: [
-      {
-        color: 'rgba(255, 0, 0, 0.1)', // Color value
-        from: new Date('2022-09-28T19:15:00.234Z').getTime(), // Start of the plot band
-        to: new Date('2022-09-28T19:38:44.665Z').getTime(), // End of the plot band
-      },
-      {
-        color: 'rgba(255, 0, 0, 0.1)', // Color value
-        from: new Date('2022-09-28T12:50:18.478Z').getTime(), // Start of the plot band
-        to: new Date('2022-09-28T13:08:42.767Z').getTime(), // End of the plot band
-      }],
     crosshair: true,
     events: {
       setExtremes: props.setExtremes,
@@ -177,6 +166,7 @@ function updatePlotLinesWidth (xAxisSerie, plotLinesAndBandsIds) {
 }
 
 const failureResults = props.results.filter((result) => result.hasFailures)
+
 function addPlotLines (xAxisSerie) {
   const chartColumnEl = document.querySelector('.highcharts-column-series .highcharts-point')
   const pointWidth = Math.round(chartColumnEl?.point?.pointWidth)
@@ -191,7 +181,7 @@ function addPlotLines (xAxisSerie) {
         xAxisSerie.addPlotLine({
           value: dataRange,
           color: 'rgba(255, 0, 0, 0.1)',
-          width: Number(pointWidth + pointWidth * 0.3),
+          width: Number(pointWidth + pointWidth * 0.3) || 10,
           id: failure.id,
         })
       }
@@ -212,5 +202,10 @@ function insertDrawerButton (chart) {
   })
 
   document.querySelector('.check-run-chart .highcharts-container').appendChild(button)
+}
+
+function setupChart (chart) {
+  insertDrawerButton(chart)
+  addPlotLines(chart.xAxis[0])
 }
 </script>

@@ -19,5 +19,6 @@ module.exports = {
   rules: {
     'vue/custom-event-name-casing': 'off',
     'vue/no-v-html': 'off',
+    'vue/max-len': 'off',
   },
 }
