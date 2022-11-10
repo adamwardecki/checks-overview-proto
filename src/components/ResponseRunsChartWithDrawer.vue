@@ -114,12 +114,14 @@ const defaultOptions = computed(() => {
         height: '80%',
       },
       {
+        opposite: false,
         labels: {
-          align: 'left',
+          align: 'right',
         },
         top: '80%',
         height: '20%',
         offset: 0,
+        tickInterval: 5,
       },
     ],
     xAxis: {
@@ -259,7 +261,7 @@ function insertDrawerButton (chart) {
 }
 
 function removePlotLines (xAxisSerie) {
-  const plotLinesAndBandsIds = this.xAxis[0].plotLinesAndBands.map(({ id }) => id)
+  const plotLinesAndBandsIds = xAxisSerie.plotLinesAndBands.map(({ id }) => id)
 
   for (const existingPlotLine of plotLinesAndBandsIds) {
     xAxisSerie.removePlotLine(existingPlotLine)
