@@ -253,7 +253,11 @@ function insertDrawerButton (chart) {
 
   button.addEventListener('click', () => {
     emit('toggle:drawer')
-    emit('set:period', this.xAxis[0].getExtremes())
+
+    setTimeout(() => {
+      emit('set:period', chart.xAxis[0].getExtremes())
+    }, 1000)
+
     button.innerText = `${props.isDrawerOpen ? 'Show' : 'Hide'} details`
   })
 

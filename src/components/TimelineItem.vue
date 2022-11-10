@@ -1,20 +1,17 @@
 <template>
-  <div
-    class="flex items-center justify-between p-2 font-semibold border-b last:border-b-0 border-slate-300"
-    :class="{
-      'bg-[rgba(255,0,0,0.1)]': isFailure,
-    }"
-  >
-    <div class="flex items-center w-3/4">
-      <span
-        class="mr-5"
-        v-html="isAlert ? alertIcon : icon"
-      />
-      <p class="mr-5 truncate max-w-[80%] flex items-center">
-        <template v-if="isAlert">
-          {{ alertDescription }}
-        </template>
-        <template v-else>
+  <div class="flex flex-col border-b last:border-b-0 border-slate-300">
+    <div
+      class="flex items-center justify-between w-full p-2 font-semibold "
+      :class="{
+        'bg-[rgba(255,0,0,0.1)]': isFailure,
+      }"
+    >
+      <div class="flex items-center w-3/4">
+        <span
+          class="mr-5"
+          v-html="icon"
+        />
+        <p class="mr-5 truncate max-w-[80%] flex items-center">
           {{ getLocationName(item.runLocation) }}
           <img
             class="h-5 ml-2"
@@ -24,10 +21,29 @@
             {{ formatDuration(item.responseTime, { showUnit: true }) }}
           </span>
           <span v-html="icons['camera']" />
-        </template>
-      </p>
+        </p>
+      </div>
+      {{ formatTimestamp(item.eventType ? item.payload.created_at : item.created_at) }}
     </div>
-    {{ formatTimestamp(item.eventType ? item.payload.created_at : item.created_at) }}
+
+    <div
+      v-if="hasAlert && !showOnlyResults"
+      class="flex items-center justify-between w-full p-2 font-semibold border-t pl-11 last:border-b-0 border-slate-300"
+      :class="{
+        'bg-[rgba(255,0,0,0.1)]': isFailure,
+      }"
+    >
+      <div class="flex items-center w-3/4">
+        <span
+          class="mr-5"
+          v-html="alertIcon"
+        />
+        <p class="mr-5 truncate max-w-[80%] flex items-center">
+          {{ alertDescription }}
+        </p>
+      </div>
+      {{ formatTimestamp(item.eventType ? item.payload.created_at : item.created_at) }}
+    </div>
   </div>
 </template>
 
@@ -40,17 +56,20 @@ import { formatDuration } from '../fixtures/helpers'
 
 const props = defineProps({
   item: Object,
+  activeFilters: Array,
 })
 
 function formatTimestamp (timestamp) {
   return moment(timestamp).format('HH:mm:ss')
 }
 
-const isAlert = computed(() => props.item.eventType)
+const hasAlert = computed(() => props.item.event)
+
+const showOnlyResults = computed(() => props.activeFilters.length === 1 && props.activeFilters.includes('Results'))
 
 const isFailure = computed(() => {
-  if (isAlert.value) {
-    return props.item.payload.alertType === 'ALERT_FAILURE'
+  if (hasAlert.value) {
+    return props.item.event.payload.alertType === 'ALERT_FAILURE'
   }
   return props.item.hasErrors || props.item.hasFailures
 })
@@ -58,6 +77,6 @@ const isFailure = computed(() => {
 const icon = computed(() => isFailure.value ? icons['circle-failure'] : icons['circle-success'])
 const alertIcon = computed(() => isFailure.value ? icons['alert-failure'] : icons['alert-success'])
 const alertDescription = computed(() => {
-  return props.item.payload.alertType === 'ALERT_FAILURE' ? 'Failure Alert' : 'Recovery Alert'
+  return props.item.event.payload.alertType === 'ALERT_FAILURE' ? 'Failure Alert' : 'Recovery Alert'
 })
 </script>

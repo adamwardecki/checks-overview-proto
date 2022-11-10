@@ -33,6 +33,7 @@
           v-for="(item, index) in filteredItems"
           :key="index"
           :item="item"
+          :active-filters="filterBy"
         />
       </template>
       <template v-else>
@@ -74,15 +75,6 @@ function getCreatedAt (item) {
   return item.payload ? item.payload.created_at : item.created_at
 }
 
-function compare (a, b) {
-  if (getCreatedAt(a) > getCreatedAt(b)) {
-    return -1
-  } else if (getCreatedAt(a) < getCreatedAt(b)) {
-    return 1
-  }
-  return 0
-}
-
 const formattedPeriod = computed(() => {
   const startTime = moment(props.selectedPeriod.min).format('MMM DD HH:mm:ss')
   const endTime = moment(props.selectedPeriod.max).format('MMM DD HH:mm:ss')
@@ -90,20 +82,26 @@ const formattedPeriod = computed(() => {
   return `${startTime} - ${endTime}`
 })
 
-function isAlert (item) {
-  return item.eventType
+function hasAlert (item) {
+  return item.event
 }
 
 function isFailure (item) {
-  if (isAlert(item)) {
-    return item.payload.alertType === 'ALERT_FAILURE'
+  if (hasAlert(item)) {
+    return item.event.payload.alertType === 'ALERT_FAILURE'
   }
   return item.hasErrors || item.hasFailures
 }
 
 const sortedItems = computed(() => {
-  // sort array by date, order: newest => oldest
-  return [...events, ...results].sort((a, b) => compare(a, b))
+  const resultsWithAlerts = [...results]
+
+  for (const event of events) {
+    const result = resultsWithAlerts.find(result => event.payload.resultId === result.id)
+    result.event = event
+  }
+
+  return resultsWithAlerts
 })
 
 const selectedItems = computed(() => {
@@ -120,14 +118,14 @@ const filteredItems = computed(() => {
         return isFailure(item)
       }
 
-      if (filterBy.value.includes('Alerts') && isAlert(item)) {
+      if (filterBy.value.includes('Alerts') && hasAlert(item)) {
         if (filterBy.value.includes('Failures')) {
           return isFailure(item)
         }
         return item
       }
 
-      if (filterBy.value.includes('Results') && !isAlert(item)) {
+      if (filterBy.value.includes('Results')) {
         if (filterBy.value.includes('Failures')) {
           return isFailure(item)
         }
