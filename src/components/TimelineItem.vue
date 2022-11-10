@@ -8,7 +8,7 @@
     <div class="flex items-center w-3/4">
       <span
         class="mr-5"
-        v-html="icon"
+        v-html="isAlert ? alertIcon : icon"
       />
       <p class="mr-5 truncate max-w-[80%] flex items-center">
         <template v-if="isAlert">
@@ -56,7 +56,7 @@ const isFailure = computed(() => {
 })
 
 const icon = computed(() => isFailure.value ? icons['circle-failure'] : icons['circle-success'])
-
+const alertIcon = computed(() => isFailure.value ? icons['alert-failure'] : icons['alert-success'])
 const alertDescription = computed(() => {
   return props.item.payload.alertType === 'ALERT_FAILURE' ? 'Failure Alert' : 'Recovery Alert'
 })
