@@ -74,6 +74,8 @@ const defaultOptions = computed(() => {
       marginTop: 34,
       events: {
         render () {
+          emit('set:period', this.xAxis[0].getExtremes())
+
           const startTime = moment(this.series[0].points[0].x)
           const endTime = moment(this.series[0].points[1].x)
           const seconds = endTime.diff(startTime)
