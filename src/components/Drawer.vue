@@ -65,8 +65,9 @@ const filterBy = ref([])
 
 function toggleFilter (item) {
   if (filterBy.value.includes(item)) {
-    filterBy.value.splice(filterBy.value.indexOf(item), 1)
+    filterBy.value = []
   } else {
+    filterBy.value = []
     filterBy.value.push(item)
   }
 }
@@ -114,23 +115,11 @@ const selectedItems = computed(() => {
 const filteredItems = computed(() => {
   if (filterBy.value.length) {
     return selectedItems.value.filter(item => {
-      if (filterBy.value.includes('Failures') && !filterBy.value.includes('Alerts') && !filterBy.value.includes('Results')) {
-        return isFailure(item)
-      }
+      if (filterBy.value.includes('Failures')) return isFailure(item)
 
-      if (filterBy.value.includes('Alerts') && hasAlert(item)) {
-        if (filterBy.value.includes('Failures')) {
-          return isFailure(item)
-        }
-        return item
-      }
+      if (filterBy.value.includes('Alerts') && hasAlert(item)) return item
 
-      if (filterBy.value.includes('Results')) {
-        if (filterBy.value.includes('Failures')) {
-          return isFailure(item)
-        }
-        return item
-      }
+      if (filterBy.value.includes('Results')) return item
 
       return false
     })
