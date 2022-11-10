@@ -1,9 +1,14 @@
 <template>
   <div class="py-6">
-    <div class="text-left">
-      <h3 class="text-xl font-semibold">
+    <div class="">
+      <h3 class="text-xl font-semibold text-left">
         Check Runs Duration & Amount
       </h3>
+      <p class="text-right ">
+        <span class="font-medium">Granularity:</span>
+        {{ granularity }}
+        minutes
+      </p>
     </div>
     <highcharts
       class="check-runs-durations"
@@ -15,7 +20,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { formatDuration } from '../fixtures/helpers'
 
 const props = defineProps({
@@ -26,6 +31,12 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['set:period', 'open:drawer', 'toggle:drawer'])
+
+const granularity = ref(30)
+
+function updateGranularity (currentGranularity) {
+  granularity.value = currentGranularity
+}
 
 const resultTypes = {
   failure: [],
@@ -71,6 +82,8 @@ const defaultOptions = computed(() => {
           emit('set:period', this.xAxis[0].getExtremes())
         },
         redraw () {
+          updateGranularity(this.axes[2].series[0].currentDataGrouping.count)
+
           const plotLinesAndBandsIds = this.xAxis[0].plotLinesAndBands.map(({ id }) => id)
           updatePlotLinesWidth(this.xAxis[0], plotLinesAndBandsIds)
           addPlotLines(this.xAxis[0])
@@ -196,7 +209,7 @@ const defaultOptions = computed(() => {
         dataGrouping: {
           forced: true,
           units: [
-            ['minute', [1, 10, 30]],
+            ['minute', [10, 30]],
           ],
         },
         point: {
