@@ -117,7 +117,7 @@ const filteredItems = computed(() => {
     return selectedItems.value.filter(item => {
       if (filterBy.value.includes('Failures')) return isFailure(item)
 
-      if (filterBy.value.includes('Alerts') && hasAlert(item)) return item
+      if (filterBy.value.includes('Alerts')) return hasAlert(item)
 
       if (filterBy.value.includes('Results')) return item
 
