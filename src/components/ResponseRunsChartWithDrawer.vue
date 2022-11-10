@@ -81,13 +81,13 @@ const defaultOptions = computed(() => {
         resetButton: {
           position: {
             align: 'left',
-            x: 5,
+            x: 75,
           },
           theme: {
             fill: '#F1F5F9',
             stroke: '#D1D5DB',
             r: 5,
-            padding: 5,
+            padding: 6,
             states: {
               hover: {
                 fill: '#CBD5E1',
@@ -239,7 +239,7 @@ const defaultOptions = computed(() => {
 
 function insertDrawerButton (chart) {
   const button = document.createElement('button')
-  button.classList.add('check-details-button', 'p-1', 'text-xs', 'border', 'border-gray-300', 'rounded-md', 'bg-slate-100', 'hover:bg-slate-300', 'absolute', 'top-3', 'left-0')
+  button.classList.add('check-details-button', 'p-[4px]', 'text-xs', 'border', 'border-gray-300', 'rounded-md', 'bg-slate-100', 'hover:bg-slate-300', 'absolute', 'top-11', 'left-0', 'font-medium')
   const content = document.createTextNode('Show details')
   button.appendChild(content)
 
