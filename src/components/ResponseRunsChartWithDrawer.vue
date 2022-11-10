@@ -78,8 +78,7 @@ const defaultOptions = computed(() => {
         redraw () {
           setGranularity(this.axes[2].series[0].currentDataGrouping.totalRange)
 
-          const plotLinesAndBandsIds = this.xAxis[0].plotLinesAndBands.map(({ id }) => id)
-          updatePlotLinesWidth(this.xAxis[0], plotLinesAndBandsIds)
+          removePlotLines(this.xAxis[0])
           addPlotLines(this.xAxis[0])
         },
       },
@@ -259,15 +258,15 @@ function insertDrawerButton (chart) {
   document.querySelector('.check-runs-durations .highcharts-container').appendChild(button)
 }
 
-function updatePlotLinesWidth (xAxisSerie, plotLinesAndBandsIds) {
+function removePlotLines (xAxisSerie) {
+  const plotLinesAndBandsIds = this.xAxis[0].plotLinesAndBands.map(({ id }) => id)
+
   for (const existingPlotLine of plotLinesAndBandsIds) {
     xAxisSerie.removePlotLine(existingPlotLine)
   }
 }
 
 function addPlotLines (xAxisSerie) {
-  const chartColumnEl = document.querySelector('.highcharts-column-series .highcharts-point')
-  const pointWidth = Math.round(chartColumnEl?.point?.pointWidth)
   const delta = xAxisSerie.closestPointRange
   const dataRanges = xAxisSerie.series[0].processedXData
 
@@ -275,11 +274,16 @@ function addPlotLines (xAxisSerie) {
     const failureStarted = new Date(failure.created_at).getTime()
 
     for (const dataRange of dataRanges) {
-      if (failureStarted >= dataRange && failureStarted <= dataRange + delta) {
+      if (
+        failureStarted >= dataRange &&
+        failureStarted <= dataRange + delta &&
+        // make sure we don't add multiple plot lines over each other
+        !xAxisSerie.plotLinesAndBands.find(({ options }) => options.value === dataRange)
+      ) {
         xAxisSerie.addPlotLine({
           value: dataRange,
           color: 'rgba(255, 0, 0, 0.1)',
-          width: Number(pointWidth + pointWidth * 0.3),
+          width: xAxisSerie.series[0].closestPointRangePx,
           id: failure.id,
         })
       }

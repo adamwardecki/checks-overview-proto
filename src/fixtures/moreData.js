@@ -1,18 +1,18 @@
 export const events = [{
   eventType: 'ALERT',
-  timestamp: '2022-09-28T19:28:44.665Z',
+  timestamp: '2022-09-28T20:58:44.665Z',
   payload: {
     id: 'f52c11ab-f7e7-4760-a3da-d3eccf2e45f4',
     alertType: 'ALERT_RECOVERY',
     accountId: '0d887f8b-8ac6-4864-9e80-cb43437bf263',
     resultId: '339a4e79-9148-40cd-8c52-d07a195c3f4a',
     checkId: '8061cc4f-2467-47b8-b4f8-86a8459b1440',
-    created_at: '2022-09-28T19:28:44.665Z',
+    created_at: '2022-09-28T20:58:59.665Z',
     updated_at: null,
     name: 'Check Overview > Run Adhoc Check',
     checkType: 'BROWSER',
     runLocation: 'ca-central-1',
-    startedAt: '2022-09-28T19:28:30.970Z',
+    startedAt: '2022-09-28T20:58:30.970Z',
     responseTime: 12980,
     statusCode: null,
     error: null,
@@ -4267,7 +4267,7 @@ export const results = [
   {
     id: '3e83dc63-3a38-49bc-8e66-a6a78772f582',
     hasErrors: false,
-    hasFailures: false,
+    hasFailures: true,
     aborted: false,
     runLocation: 'ap-southeast-1',
     startedAt: '2022-09-28T20:48:31.336Z',
@@ -4291,7 +4291,7 @@ export const results = [
   {
     id: '6c345816-1050-4f86-a8e3-fe4cd4423e8c',
     hasErrors: false,
-    hasFailures: false,
+    hasFailures: true,
     aborted: false,
     runLocation: 'eu-west-2',
     startedAt: '2022-09-28T20:38:30.709Z',
@@ -4315,7 +4315,7 @@ export const results = [
   {
     id: '512729e1-feab-411c-922d-e1fed46d0deb',
     hasErrors: false,
-    hasFailures: false,
+    hasFailures: true,
     aborted: false,
     runLocation: 'eu-west-3',
     startedAt: '2022-09-28T20:28:30.570Z',
@@ -4339,7 +4339,7 @@ export const results = [
   {
     id: '70c6776f-7a36-4dbe-b92f-822449e184fe',
     hasErrors: false,
-    hasFailures: false,
+    hasFailures: true,
     aborted: false,
     runLocation: 'eu-north-1',
     startedAt: '2022-09-28T20:18:30.758Z',
@@ -4363,7 +4363,7 @@ export const results = [
   {
     id: '4453ed36-5d96-4a86-9b9d-3a8e491e420e',
     hasErrors: false,
-    hasFailures: false,
+    hasFailures: true,
     aborted: false,
     runLocation: 'eu-south-1',
     startedAt: '2022-09-28T20:08:30.652Z',
@@ -4387,7 +4387,7 @@ export const results = [
   {
     id: '1bfc8472-4802-4972-bdda-6581d5f52355',
     hasErrors: false,
-    hasFailures: false,
+    hasFailures: true,
     aborted: false,
     runLocation: 'me-south-1',
     startedAt: '2022-09-28T19:58:31.048Z',
@@ -4411,7 +4411,7 @@ export const results = [
   {
     id: 'd8176943-9e36-4fa6-82c3-2c562eef105e',
     hasErrors: false,
-    hasFailures: false,
+    hasFailures: true,
     aborted: false,
     runLocation: 'af-south-1',
     startedAt: '2022-09-28T19:48:31.140Z',
@@ -4435,7 +4435,7 @@ export const results = [
   {
     id: 'c31f7575-28ee-4ffd-9ad9-ea916213d469',
     hasErrors: false,
-    hasFailures: false,
+    hasFailures: true,
     aborted: false,
     runLocation: 'sa-east-1',
     startedAt: '2022-09-28T19:38:31.552Z',
@@ -4459,7 +4459,7 @@ export const results = [
   {
     id: '339a4e79-9148-40cd-8c52-d07a195c3f4a',
     hasErrors: false,
-    hasFailures: false,
+    hasFailures: true,
     aborted: false,
     runLocation: 'ca-central-1',
     startedAt: '2022-09-28T19:28:30.970Z',
