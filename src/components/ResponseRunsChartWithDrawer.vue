@@ -4,6 +4,9 @@
       <h3 class="text-xl font-semibold">
         Check Runs Duration & Amount
       </h3>
+      <div class="text-sm text-slate-500">
+        Granularity: {{ granularity }}
+      </div>
     </div>
     <highcharts
       class="check-runs-durations"
@@ -15,8 +18,9 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { formatDuration } from '../fixtures/helpers'
+import moment from 'moment'
 
 const props = defineProps({
   isDrawerOpen: Boolean,
@@ -26,6 +30,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['set:period', 'open:drawer', 'toggle:drawer'])
+
+const granularity = ref(null)
 
 const resultTypes = {
   failure: [],
@@ -68,7 +74,11 @@ const defaultOptions = computed(() => {
       marginTop: 34,
       events: {
         render () {
-          emit('set:period', this.xAxis[0].getExtremes())
+          const startTime = moment(this.series[0].points[0].x)
+          const endTime = moment(this.series[0].points[1].x)
+          const seconds = endTime.diff(startTime)
+
+          setGranularity(seconds)
         },
         redraw () {
           const plotLinesAndBandsIds = this.xAxis[0].plotLinesAndBands.map(({ id }) => id)
@@ -283,5 +293,9 @@ function addPlotLines (xAxisSerie) {
 function setupChart (chart) {
   insertDrawerButton(chart)
   addPlotLines(chart.xAxis[0])
+}
+
+function setGranularity (seconds) {
+  granularity.value = formatDuration(seconds, { showUnit: true })
 }
 </script>
