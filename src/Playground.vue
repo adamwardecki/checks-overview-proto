@@ -61,6 +61,7 @@
       <ResponseRunsChartWithAlerts />
 
       <ResponseRunsChartWithDrawer
+        :timestamps="createdAtTimeStamps"
         :results="results"
         @open:drawer="toggleDrawer"
         @select:period="setPeriod($event)"
@@ -84,7 +85,8 @@ import ResponseRunsChartWithDrawer from './components/ResponseRunsChartWithDrawe
 import RunResultsColumnsChart from './components/RunResultsColumnsChart.vue'
 import ResponseResultsChartWithBands from './components/ResponseResultsChartWithBands.vue'
 import AllRunResultsChartWithBands from './components/AllRunResultsChartWithBands.vue'
-import { results } from './fixtures/moreData'
+import { results, createdAtTimeStamps } from './fixtures/moreData'
+
 import {
   duration,
   dates,
@@ -128,6 +130,7 @@ export default {
     isDrawerOpen: false,
     selectedPeriod: {},
     results,
+    createdAtTimeStamps,
   }),
   computed: {
     durationChartOptions () {
