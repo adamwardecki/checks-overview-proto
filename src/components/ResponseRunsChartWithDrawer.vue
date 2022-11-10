@@ -1,13 +1,11 @@
 <template>
   <div class="py-6">
-    <div class="">
+    <div>
       <h3 class="text-xl font-semibold text-left">
         Check Runs Duration & Amount
       </h3>
-      <p class="text-right ">
-        <span class="font-medium">Granularity:</span>
-        {{ granularity }}
-        minutes
+      <p class="pr-12 text-sm text-right text-slate-500">
+        Granularity: {{ granularity }}
       </p>
     </div>
     <highcharts
@@ -32,11 +30,7 @@ const props = defineProps({
 
 const emit = defineEmits(['set:period', 'open:drawer', 'toggle:drawer'])
 
-const granularity = ref(30)
-
-function updateGranularity (currentGranularity) {
-  granularity.value = currentGranularity
-}
+const granularity = ref('30 min')
 
 const resultTypes = {
   failure: [],
@@ -82,7 +76,7 @@ const defaultOptions = computed(() => {
           emit('set:period', this.xAxis[0].getExtremes())
         },
         redraw () {
-          updateGranularity(this.axes[2].series[0].currentDataGrouping.count)
+          setGranularity(this.axes[2].series[0].currentDataGrouping.totalRange)
 
           const plotLinesAndBandsIds = this.xAxis[0].plotLinesAndBands.map(({ id }) => id)
           updatePlotLinesWidth(this.xAxis[0], plotLinesAndBandsIds)
@@ -296,5 +290,9 @@ function addPlotLines (xAxisSerie) {
 function setupChart (chart) {
   insertDrawerButton(chart)
   addPlotLines(chart.xAxis[0])
+}
+
+function setGranularity (seconds) {
+  granularity.value = formatDuration(seconds, { showUnit: true })
 }
 </script>
