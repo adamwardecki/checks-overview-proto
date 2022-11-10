@@ -65,7 +65,9 @@ function formatTimestamp (timestamp) {
 
 const hasAlert = computed(() => props.item.event)
 
-const showOnlyResults = computed(() => props.activeFilters.length === 1 && props.activeFilters.includes('Results'))
+const showOnlyResults = computed(() => {
+  return props.activeFilters.length === 1 && props.activeFilters.includes('Results')
+})
 
 const isFailure = computed(() => {
   if (hasAlert.value) {
