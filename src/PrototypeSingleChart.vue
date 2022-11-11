@@ -48,7 +48,7 @@ function escapeHandler (event) {
   if (event.key === 'Escape') {
     event.preventDefault()
     if (isDrawerOpen.value) {
-      isDrawerOpen.value = false
+      toggleDrawer()
     }
   }
 }
