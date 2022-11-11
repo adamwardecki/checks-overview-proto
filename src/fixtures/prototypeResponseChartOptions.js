@@ -48,7 +48,7 @@ export default {
   series: [
     {
       id: 'resp-time',
-      name: 'Response Time',
+      name: 'Check duration',
       data: results.map((result) => ({
         x: new Date(result.created_at).getTime(),
         y: result.responseTime,

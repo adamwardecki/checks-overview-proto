@@ -44,7 +44,7 @@ const defaultOptions = computed(() => ({
   series: [
     {
       id: 'resp-time',
-      name: 'Response Time',
+      name: 'Check duration',
       data: mergeResponseDates(responseTime.series[2].data, responseTime.categories),
       lineWidth: 1,
       color: '#333',

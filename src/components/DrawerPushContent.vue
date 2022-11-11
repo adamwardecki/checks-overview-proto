@@ -1,7 +1,7 @@
 <template>
   <aside
-    class="fixed top-0 z-10 w-1/3 h-full p-8 overflow-auto text-left bg-white drop-shadow-md"
-    :class="isOpen ? 'drawer--open' : 'drawer--closed'"
+    class="fixed top-[3.5rem] h-[calc(100vh-3.5rem)] p-8 overflow-auto text-left bg-white drop-shadow-md w-[450px]"
+    :class="isOpen ? 'right-0' : 'right-[-500px]'"
   >
     <span
       class="absolute cursor-pointer top-3 right-3 hover:fill-slate-500"
@@ -127,14 +127,3 @@ const filteredItems = computed(() => {
   return selectedItems.value
 })
 </script>
-
-<style>
-.drawer--open {
-  right: 0;
-  transition: right 900ms;
-}
-.drawer--closed {
-  right: -100%;
-  transition: right 700ms;
-}
-</style>

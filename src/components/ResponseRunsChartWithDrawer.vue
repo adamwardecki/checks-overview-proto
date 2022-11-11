@@ -8,7 +8,14 @@
         Granularity: {{ formatDuration(granularity, { showUnit: true }) }}
       </p>
     </div>
+    <p class="flex items-center">
+      <span
+        class="mr-1"
+        v-html="icons['light-bulb']"
+      />Pro tip: Click and drag to zoom in
+    </p>
     <highcharts
+      ref="chart"
       class="check-runs-durations"
       constructor-type="stockChart"
       :options="defaultOptions"
@@ -18,9 +25,10 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, onUpdated } from 'vue'
 import moment from 'moment'
 import { formatDuration } from '../fixtures/helpers'
+import icons from '../assets/icons.json'
 
 const props = defineProps({
   isDrawerOpen: Boolean,
@@ -32,12 +40,17 @@ const props = defineProps({
 const emit = defineEmits(['set:period', 'open:drawer', 'toggle:drawer'])
 
 const granularity = ref(null)
+const chart = ref(null)
 
 const resultTypes = {
   failure: [],
   degraded: [],
   success: [],
 }
+
+onUpdated(() => {
+  chart.value.chart.reflow()
+})
 
 for (const result of props.results) {
   if (result.hasFailures) resultTypes.failure.push(result)
@@ -72,8 +85,10 @@ const defaultOptions = computed(() => {
   return {
     chart: {
       marginTop: 34,
+      // with navigator
+      // marginTop: 100
       events: {
-        render () {
+        render (chart) {
           granularity.value = this.axes[2].series[0].currentDataGrouping.totalRange
           emit('set:period', this.xAxis[0].getExtremes())
         },
@@ -132,7 +147,7 @@ const defaultOptions = computed(() => {
     series: [
       {
         id: 'resp-time',
-        name: 'Response Time',
+        name: 'Check duration',
         data: lineResults,
         lineWidth: 1,
         color: '#333',
@@ -174,6 +189,12 @@ const defaultOptions = computed(() => {
     },
     navigator: {
       enabled: false,
+    },
+    navigation: {
+      buttonOptions: {
+        enabled: true,
+        text: '+',
+      },
     },
     legend: {
       enabled: false,
@@ -246,7 +267,7 @@ const defaultOptions = computed(() => {
         return [moment(this.x).format('MMM DD HH:mm') + ' - ' + moment(this.x + granularity.value).format('HH:mm')].concat(
           this.points
             ? this.points.map(function (point) {
-              if (point.series.name === 'Response Time') {
+              if (point.series.name === 'Check duration') {
                 return (
                   point.series.name +
                   ': <b>' +
@@ -280,11 +301,7 @@ function insertDrawerButton (chart) {
 
   button.addEventListener('click', () => {
     emit('toggle:drawer')
-
-    setTimeout(() => {
-      emit('set:period', chart.xAxis[0].getExtremes())
-    }, 1000)
-
+    emit('set:period', chart.xAxis[0].getExtremes())
     button.innerText = `${props.isDrawerOpen ? 'Show' : 'Hide'} details`
   })
 

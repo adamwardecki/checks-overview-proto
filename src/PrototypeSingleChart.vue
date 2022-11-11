@@ -12,6 +12,7 @@
     </div>
     <div id="container">
       <ResponseRunsChartWithDrawer
+        :is-drawer-open="isDrawerOpen"
         :timestamps="createdAtTimeStamps"
         :results="results"
         :events="events"
@@ -40,7 +41,6 @@ function toggleDrawer () {
 function openDrawer () {
   if (!isDrawerOpen.value) {
     isDrawerOpen.value = true
-    document.querySelector('.check-details-button').innerText = 'Hide details'
   }
 }
 </script>

@@ -28,7 +28,7 @@ export default {
   series: [
     {
       id: 'aapl-ohlc',
-      name: 'Response Time',
+      name: 'Check duration',
       data: mergeResponseDates(responseTime, dates),
       lineWidth: 1,
       color: '#333',
