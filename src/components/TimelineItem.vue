@@ -27,7 +27,7 @@
     </div>
 
     <div
-      v-if="hasAlert && !showOnlyResults"
+      v-if="hasAlert && !(activeFilter === 'Results')"
       class="flex items-center justify-between w-full p-2 font-semibold border-t pl-11 last:border-b-0 border-slate-300"
       :class="{
         'bg-[rgba(255,0,0,0.1)]': isFailure,
@@ -56,7 +56,7 @@ import { formatDuration } from '../fixtures/helpers'
 
 const props = defineProps({
   item: Object,
-  activeFilters: Array,
+  activeFilter: String,
 })
 
 function formatTimestamp (timestamp) {
@@ -64,10 +64,6 @@ function formatTimestamp (timestamp) {
 }
 
 const hasAlert = computed(() => props.item.event)
-
-const showOnlyResults = computed(() => {
-  return props.activeFilters.length === 1 && props.activeFilters.includes('Results')
-})
 
 const isFailure = computed(() => {
   if (hasAlert.value) {

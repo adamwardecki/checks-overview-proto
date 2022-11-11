@@ -22,7 +22,7 @@
         v-for="(filterItem, index) in filters"
         :key="index"
         :name="filterItem"
-        :active="filterBy.includes(filterItem)"
+        :active="filterBy === filterItem"
         @click="toggleFilter(filterItem)"
       />
     </div>
@@ -33,7 +33,7 @@
           v-for="(item, index) in filteredItems"
           :key="index"
           :item="item"
-          :active-filters="filterBy"
+          :active-filter="filterBy"
         />
       </template>
       <template v-else>
@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import icons from '../assets/icons.json'
 import { events, results } from '../fixtures/moreData.js'
 import TimelineItem from './TimelineItem.vue'
@@ -60,16 +60,15 @@ const props = defineProps({
 
 const emit = defineEmits(['toggle:drawer'])
 
+watch(() => props.isOpen, () => {
+  filterBy.value = ''
+})
+
 const filters = ref(['Results', 'Alerts', 'Failures'])
-const filterBy = ref([])
+const filterBy = ref('')
 
 function toggleFilter (item) {
-  if (filterBy.value.includes(item)) {
-    filterBy.value = []
-  } else {
-    filterBy.value = []
-    filterBy.value.push(item)
-  }
+  filterBy.value === item ? filterBy.value = '' : filterBy.value = item
 }
 
 function getCreatedAt (item) {
@@ -115,11 +114,11 @@ const selectedItems = computed(() => {
 const filteredItems = computed(() => {
   if (filterBy.value.length) {
     return selectedItems.value.filter(item => {
-      if (filterBy.value.includes('Failures')) return isFailure(item)
+      if (filterBy.value === 'Failures') return isFailure(item)
 
-      if (filterBy.value.includes('Alerts')) return hasAlert(item)
+      if (filterBy.value === 'Alerts') return hasAlert(item)
 
-      if (filterBy.value.includes('Results')) return item
+      if (filterBy.value === 'Results') return item
 
       return false
     })
