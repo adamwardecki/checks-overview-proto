@@ -5,7 +5,7 @@
         Check Runs Duration & Amount
       </h3>
       <p class="pr-12 text-sm text-right text-slate-500">
-        Granularity: {{ granularity }}
+        Granularity: {{ formatDuration(granularity, { showUnit: true }) }}
       </p>
     </div>
     <highcharts
@@ -19,6 +19,7 @@
 
 <script setup>
 import { computed, ref } from 'vue'
+import moment from 'moment'
 import { formatDuration } from '../fixtures/helpers'
 
 const props = defineProps({
@@ -30,7 +31,7 @@ const props = defineProps({
 
 const emit = defineEmits(['set:period', 'open:drawer', 'toggle:drawer'])
 
-const granularity = ref('30 min')
+const granularity = ref(null)
 
 const resultTypes = {
   failure: [],
@@ -73,11 +74,10 @@ const defaultOptions = computed(() => {
       marginTop: 34,
       events: {
         render () {
+          granularity.value = this.axes[2].series[0].currentDataGrouping.totalRange
           emit('set:period', this.xAxis[0].getExtremes())
         },
         redraw () {
-          setGranularity(this.axes[2].series[0].currentDataGrouping.totalRange)
-
           removePlotLines(this.xAxis[0])
           addPlotLines(this.xAxis[0])
         },
@@ -241,6 +241,33 @@ const defaultOptions = computed(() => {
     },
     tooltip: {
       valueDecimals: 0,
+      formatter () {
+      // The first returned item is the header, subsequent items are the points
+        return [moment(this.x).format('MMM DD HH:mm') + ' - ' + moment(this.x + granularity.value).format('HH:mm')].concat(
+          this.points
+            ? this.points.map(function (point) {
+              if (point.series.name === 'Response Time') {
+                return (
+                  point.series.name +
+                  ': <b>' +
+                  formatDuration(point.y, { showUnit: true }) +
+                  '</b>'
+                )
+              } else {
+                return (
+                  '<span style="color:' +
+                  point.color +
+                  '">\u25CF</span> ' +
+                  point.series.name +
+                  ': <b>' +
+                  point.y +
+                  '</b>'
+                )
+              }
+            })
+            : [],
+        )
+      },
     },
   }
 })
@@ -300,9 +327,5 @@ function addPlotLines (xAxisSerie) {
 function setupChart (chart) {
   insertDrawerButton(chart)
   addPlotLines(chart.xAxis[0])
-}
-
-function setGranularity (seconds) {
-  granularity.value = formatDuration(seconds, { showUnit: true })
 }
 </script>
