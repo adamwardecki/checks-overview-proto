@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="fixed top-[3.5rem] h-[calc(100vh-3.5rem)] p-8 overflow-auto text-left bg-white drop-shadow-md w-[450px]"
+    class="fixed top-[calc(3.5rem+1px)] h-[calc(100vh-3.5rem)] p-8 overflow-auto text-left bg-white drop-shadow-md w-[450px]"
     :class="isOpen ? 'right-0' : 'right-[-500px]'"
   >
     <span
