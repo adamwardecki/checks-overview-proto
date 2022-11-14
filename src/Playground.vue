@@ -72,6 +72,13 @@
       <ResponseResultsChartWithBands />
 
       <AllRunResultsChartWithBands />
+
+      <ResponseRunsChartApiSynced
+        :timestamps="createdAtTimeStamps"
+        :results="results"
+        @open:drawer="toggleDrawer"
+        @select:period="setPeriod($event)"
+      />
     </div>
   </div>
 </template>
@@ -82,6 +89,7 @@ import ResponseRunsChart from './components/ResponseRunsChart.vue'
 import ResponseRunsChartWithBands from './components/ResponseRunsChartWithBands.vue'
 import ResponseRunsChartWithAlerts from './components/ResponseRunsChartWithAlerts.vue'
 import ResponseRunsChartWithDrawer from './components/ResponseRunsChartWithDrawer.vue'
+import ResponseRunsChartApiSynced from './components/ResponseRunsChartApiSynced.vue'
 import RunResultsColumnsChart from './components/RunResultsColumnsChart.vue'
 import ResponseResultsChartWithBands from './components/ResponseResultsChartWithBands.vue'
 import AllRunResultsChartWithBands from './components/AllRunResultsChartWithBands.vue'
@@ -106,6 +114,7 @@ export default {
     RunResultsColumnsChart,
     ResponseResultsChartWithBands,
     AllRunResultsChartWithBands,
+    ResponseRunsChartApiSynced,
   },
   data: () => ({
     options: {
