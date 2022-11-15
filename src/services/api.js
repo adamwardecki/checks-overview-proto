@@ -35,12 +35,10 @@ function getMinMax (results, min, max) {
 /**
  * Load new data depending on the selected min and max
  */
-export function afterSetExtremes (e) {
-  console.log(e)
+export function fetchGroupedData (e) {
   const { target: { chart }, min: chartMin, max: chartMax, trigger } = e
-  console.log('FOO', trigger, trigger !== 'zoom' && trigger !== 'setup')
 
-  if (!['zoom', 'setup'].includes(trigger)) return // prevent infinite loop on reset zoom
+  if (!['zoom', 'setup', 'reset'].includes(trigger)) return // prevent infinite loop on reset zoom
   chart.showLoading('Loading data...')
 
   return new Promise((resolve, reject) => {
@@ -82,7 +80,7 @@ export function afterSetExtremes (e) {
         chart.series[3].setData(columnSeriesDegraded)
         chart.series[4].setData(columnSeriesDummy)
         chart.hideLoading()
-        resolve()
+        resolve({ granularity, min, max })
       } catch (error) {
         reject(error)
       }

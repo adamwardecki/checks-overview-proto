@@ -8,8 +8,12 @@
         Granularity: {{ granularity }}
       </p>
     </div>
+    <button @click="resetZoom">
+      Reset zoom
+    </button>
     <highcharts
-      class="check-runs-durations"
+      ref="responseRunsChartApiSynced"
+      class="check-runs-api-synced-chart"
       constructor-type="stockChart"
       :options="defaultOptions"
       :callback="setupChart"
@@ -20,7 +24,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { formatDuration } from '../fixtures/helpers'
-import { afterSetExtremes } from '../services/api'
+import { fetchGroupedData } from '../services/api'
 
 const props = defineProps({
   isDrawerOpen: Boolean,
@@ -31,6 +35,7 @@ const props = defineProps({
 
 const emit = defineEmits(['set:period', 'open:drawer', 'toggle:drawer'])
 
+const responseRunsChartApiSynced = ref(null)
 const granularity = ref('30 min')
 
 const resultTypes = {
@@ -45,41 +50,42 @@ for (const result of props.results) {
   if (!result.hasFailures && !result.isDegraded) resultTypes.success.push(result)
 }
 
+const initialMin = ref()
+const initialMax = ref()
+function resetZoom () {
+  responseRunsChartApiSynced.value.chart.xAxis[0].setExtremes(initialMin.value, initialMax.value)
+  fetchGroupedData({ target: { chart: responseRunsChartApiSynced.value.chart }, trigger: 'reset' })
+}
+
+async function afterSetExtremes (e) {
+  const resp = await fetchGroupedData(e)
+  if (resp?.granularity) setGranularity(resp.granularity)
+  return resp
+}
+
+async function setupChart (chart) {
+  // there is no min/max yet - need to fix this - i
+  const resp = await afterSetExtremes({ target: { chart }, trigger: 'setup' })
+  insertDrawerButton(chart)
+  addPlotLines(chart.xAxis[0])
+  if (resp.min && resp.max) {
+    initialMin.value = resp.min
+    initialMax.value = resp.max
+  }
+}
+
 // eslint-disable-next-line no-unused-vars
-// const getResults = (resultTypes) => resultTypes.map(({ startedAt }) => (
-//   [new Date(startedAt).getTime(), 1]
-// )).sort((a, b) => a[0] - b[0])
-
-// const dummyColumn = props.timestamps.sort((a, b) => new Date(a).getTime() - new Date(b).getTime()).map((timestamp) => (
-//   { x: new Date(timestamp).getTime(), y: 1 }
-// ))
-
-// const successResults = getResults(resultTypes.success)
-// const failureResults = getResults(resultTypes.failure)
-// const degradedResults = getResults(resultTypes.degraded)
-
-// const lineResults = props.results.map((result) => ({
-//   x: new Date(result.created_at).getTime(),
-//   y: result.responseTime,
-//   ...(result.hasFailures
-//     ? {
-//         color: '#BF0B23',
-//         marker: { lineColor: '#BF0B23', lineWidth: 2 },
-//       }
-//     : {}),
-// })).sort((a, b) => a.x - b.x)
+function setGranularity (miliseconds) {
+  granularity.value = formatDuration(miliseconds, { showUnit: true })
+}
 
 const defaultOptions = computed(() => {
   return {
     chart: {
       marginTop: 34,
       events: {
-        render () {
-          emit('set:period', this.xAxis[0].getExtremes())
-        },
         redraw () {
-          // setGranularity(this.axes[2].series[0].currentDataGrouping.totalRange)
-
+          // TODO: plotlines are based on the results from props - need to change to the ones from fetchGroupedData
           removePlotLines(this.xAxis[0])
           addPlotLines(this.xAxis[0])
         },
@@ -87,20 +93,9 @@ const defaultOptions = computed(() => {
       zoomType: 'x',
       zooming: {
         resetButton: {
-          position: {
-            align: 'left',
-            x: 75,
-          },
           theme: {
-            fill: '#F1F5F9',
-            stroke: '#D1D5DB',
-            r: 5,
-            padding: 6,
-            states: {
-              hover: {
-                fill: '#CBD5E1',
-              },
-            },
+            // hide the default reset button
+            zIndex: -1,
           },
         },
       },
@@ -206,12 +201,6 @@ const defaultOptions = computed(() => {
             },
           },
         },
-        dataGrouping: {
-          forced: true,
-          units: [
-            ['minute', [10, 30]],
-          ],
-        },
         point: {
           events: {
             click () {
@@ -258,11 +247,11 @@ function insertDrawerButton (chart) {
 
   button.addEventListener('click', () => {
     emit('toggle:drawer')
-    emit('set:period', this.xAxis[0].getExtremes())
+    emit('set:period', chart.xAxis[0].getExtremes())
     button.innerText = `${props.isDrawerOpen ? 'Show' : 'Hide'} details`
   })
 
-  document.querySelector('.check-runs-durations .highcharts-container').appendChild(button)
+  document.querySelector('.check-runs-api-synced-chart .highcharts-container').appendChild(button)
 }
 
 function removePlotLines (xAxisSerie) {
@@ -296,17 +285,5 @@ function addPlotLines (xAxisSerie) {
       }
     }
   }
-}
-
-async function setupChart (chart) {
-  // there is no min/max yet - need to fix this
-  await afterSetExtremes({ target: { chart }, trigger: 'setup' })
-  insertDrawerButton(chart)
-  addPlotLines(chart.xAxis[0])
-}
-
-// eslint-disable-next-line no-unused-vars
-function setGranularity (seconds) {
-  granularity.value = formatDuration(seconds, { showUnit: true })
 }
 </script>
