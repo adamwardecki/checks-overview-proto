@@ -38,14 +38,19 @@ const isDrawerOpen = ref(false)
 const selectedPeriod = ref({})
 
 function toggleDrawer () {
-  document.querySelector('.check-details-button').innerText = `${isDrawerOpen.value ? 'Show' : 'Hide'} details`
+  updateButton()
   isDrawerOpen.value = !isDrawerOpen.value
 }
 
 function openDrawer () {
   if (!isDrawerOpen.value) {
+    updateButton()
     isDrawerOpen.value = true
   }
+}
+
+function updateButton () {
+  document.querySelector('.check-details-button').innerText = `${isDrawerOpen.value ? 'Show' : 'Hide'} details`
 }
 
 function escapeHandler (event) {
