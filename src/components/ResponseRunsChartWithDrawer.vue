@@ -85,12 +85,10 @@ const defaultOptions = computed(() => {
   return {
     chart: {
       marginTop: 34,
-      // with navigator
-      // marginTop: 100
       events: {
-        render (chart) {
+        render () {
           granularity.value = this.axes[2].series[0].currentDataGrouping.totalRange
-          emit('set:period', this.xAxis[0].getExtremes())
+          if (!props.isDrawerOpen) emit('set:period', this.xAxis[0].getExtremes())
         },
         redraw () {
           removePlotLines(this.xAxis[0])
